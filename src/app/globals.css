@@ -11,8 +11,43 @@
 }
 
 @font-face {
+  font-family: "General Sans Bold";
+  src: url("/fonts/GeneralSans-Bold.otf") format("opentype");
+}
+
+@font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-Regular.otf") format("opentype");
+}
+
+/* Apply to the whole site */
+html {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ff82e9 #f0f0f0; /* thumb color, track color (Firefox fallback) */
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Track color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ebc501, #ff82e9);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #deb902,
+    #ff82e9
+  ); /* Slightly darker on hover */
 }
 
 /* Tailwind CSS customizations */
@@ -39,8 +74,16 @@
   font-family: "Georgia", serif;
 }
 
+.font-sans {
+  font-family: "General Sans", sans-serif;
+}
+
+.font-sans-bold {
+  font-family: "General Sans Bold", sans-serif;
+}
+
 .body {
-  background-color: white;
+  background-color: #f9f5f6;
 }
 
 * {
@@ -77,4 +120,20 @@
   height: 44px;
   border-radius: 50px;
   color: #fff;
+}
+
+.input-border {
+  position: relative;
+  border-radius: 24px;
+  padding: 2px; /* border thickness */
+  background: linear-gradient(90deg, #ebc501, #ff82e9);
+}
+
+.input-border div {
+  border: none;
+  border-radius: 24px; /* inner radius = outer radius - padding */
+  padding: 8px 12px;
+  width: 100%;
+  background: white;
+  outline: none;
 }

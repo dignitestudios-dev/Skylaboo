@@ -1,9 +1,98 @@
-import React from 'react'
+import SectionHeading from "../common/SectionHeading";
+import ProductCard from "../common/ProductCard";
+import Tabs from "./Tabs";
+
+const products = [
+  {
+    image: "1.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "2.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "3.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "4.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "5.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "6.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+
+  {
+    image: "7.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "8.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "9.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+  {
+    image: "10.png",
+    name: "Skylaboo Kids Shirt",
+    price: "110.00",
+  },
+];
+
+const tabs = ["All", "Tops", "Bottoms", "Shoes", "Accessories", "Toys"];
 
 const ShopNow = () => {
   return (
-    <div>ShopNow</div>
-  )
-}
+    <section className="px-12 py-6 relative">
+      {/* Yellow Glow */}
+      <div className="absolute z-10 left-[20%] -top-[200px] w-[700px] h-[700px] bg-[var(--color-yellow)]/20 rounded-full blur-[150px]" />
 
-export default ShopNow
+      <div className="relative z-20">
+        <div className="w-full flex flex-col gap-3 items-center justify-center">
+          <SectionHeading title1="Shop" title2="Now" />{" "}
+          <p className="text-center text-black/65 text-sm">
+            Find the perfect outfit and essentials for every magical moment.{" "}
+          </p>
+        </div>
+
+        <Tabs tabs={tabs} defaultActive="All" />
+
+        <div className="mt-6 grid grid-cols-5 gap-x-3 gap-y-8">
+          {products.map((product, index) => (
+            <ProductCard
+              key={index}
+              product={{
+                ...product,
+                image: `/images/products/${product.image}`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="overflow-hidden absolute w-full h-full bottom-0 left-0">
+        <div className="absolute z-10 -left-[300px] bottom-0 w-[70%] h-[400px] bg-[var(--color-yellow)]/30 rounded-full blur-[100px]" />
+        <div className="absolute z-10 -right-[300px] bottom-0 w-[70%] h-[400px] bg-[var(--color-purple)]/30 rounded-full blur-[100px]" />
+      </div>
+    </section>
+  );
+};
+
+export default ShopNow;

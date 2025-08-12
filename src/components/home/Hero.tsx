@@ -22,9 +22,9 @@ const Hero = () => {
         <Image
           src={"/images/hero1.png"}
           alt="Skylaboo"
-          width={1400}
-          height={1400}
-          className="absolute -top-52 -right-22"
+          width={1200}
+          height={1200}
+          className="absolute -top-52 right-0 w-[900px]"
         />
       </div>
     </section>
