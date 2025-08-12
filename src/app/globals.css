@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "Georgia";
+  src: url("/fonts/georgia.ttf") format("truetype");
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-Regular.otf") format("opentype");
 }
 
-@media (prefers-color-scheme: dark) {
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-Regular.otf") format("opentype");
+}
+
+/* Tailwind CSS customizations */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --font-general: "General Sans", sans-serif;
+    --font-georgia: "Georgia", serif;
+    --color-purple: rgba(255, 130, 233, 1);
+    --color-yellow: rgba(235, 197, 1, 1);
+    --color-multi-gradient: linear-gradient(
+      94.74deg,
+      rgba(235, 197, 1, 1) -9.76%,
+      rgba(255, 130, 233, 1) 109.27%
+    );
+    --color-purple-gradient: linear-gradient(
+      94.74deg,
+      rgba(247, 176, 251, 1) -9.76%,
+      rgba(255, 130, 233, 1) 109.27%
+    );
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-georgia {
+  font-family: "Georgia", serif;
+}
+
+.body {
+  background-color: white;
+}
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+.bg-multi-gradient {
+  background: var(--color-multi-gradient);
+}
+
+.bg-purple-gradient {
+  background: var(--color-purple-gradient);
+}
+
+.gradient-text {
+  background: var(--color-multi-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; /* For Firefox */
+  color: transparent;
+}
+
+.bg-multi-gradient-glow {
+  background: var(--color-multi-gradient);
+  opacity: 0.3;
+}
+
+.purple-btn {
+  background: var(--color-purple-gradient);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 254px;
+  height: 44px;
+  border-radius: 50px;
+  color: #fff;
 }
