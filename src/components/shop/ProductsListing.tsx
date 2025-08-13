@@ -5,103 +5,123 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const products = [
   {
+    id: 123,
     image: "1.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "2.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "3.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "4.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "5.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "6.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
 
   {
+    id: 123,
     image: "7.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "8.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "9.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "10.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "1.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "2.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "3.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "4.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "5.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "6.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
 
   {
+    id: 123,
     image: "7.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "8.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "9.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
+    id: 123,
     image: "10.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",

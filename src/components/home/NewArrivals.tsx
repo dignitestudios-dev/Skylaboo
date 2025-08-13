@@ -9,6 +9,7 @@ import SectionHeading from "../common/SectionHeading";
 import ProductCard from "../common/ProductCard";
 
 const product = {
+  id: 123,
   image:
     "https://shop.mango.com/assets/rcs/pics/static/T7/fotos/S/77084774_56.jpg",
   name: "Skylaboo Kids Shirt",

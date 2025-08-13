@@ -137,3 +137,49 @@ html {
   background: white;
   outline: none;
 }
+
+/* Accordion styles start */
+
+.accordion__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion {
+  background-color: #fff;
+  border-radius: 34px;
+  color: #444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: none;
+  outline: none;
+  transition: background-color 0.6s ease;
+}
+
+.accordion__title {
+  font-weight: 600;
+}
+
+.accordion__icon {
+  margin-left: auto;
+  transition: transform 0.6s ease;
+}
+
+.rotate {
+  transform: rotate(90deg);
+}
+
+.accordion__content {
+  background-color: white;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+}
+
+.accordion__text {
+  font-weight: 400;
+  padding: 18px;
+}
+
+/* Accordion styles end */

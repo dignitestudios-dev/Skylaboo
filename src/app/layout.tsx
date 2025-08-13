@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import YellowGlow from "@/components/common/YellowGlow";
+import StoreProvider from "@/components/providers/StoreProvider";
+import CartSlider from "@/components/cart/CartSlider";
 
 export const metadata: Metadata = {
   title: "Skylaboo",
@@ -18,15 +20,28 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`antialiased flex justify-center overflow-x-hidden`}>
-        <main className="w-full">
-          {/* Yellow Glow */}
-          <div className="relative -top-[500px] left-[20%] blur-2xl">
-            <YellowGlow />
-          </div>
-          <Navbar />
-          {children}
-          <Footer />
-        </main>
+        {/* Redux store provider start */}
+        <StoreProvider>
+          <main className="w-full">
+            {/* Yellow Glow */}
+            <div className="relative -top-[500px] left-[20%] blur-2xl">
+              <YellowGlow />
+            </div>
+
+            {/* Common navigation bar */}
+            <Navbar />
+
+            {/* Cart Slider */}
+            <CartSlider />
+
+            {/* Pages */}
+            {children}
+
+            {/* Common footer */}
+            <Footer />
+          </main>
+        </StoreProvider>
+        {/* Redux store provider end */}
       </body>
     </html>
   );

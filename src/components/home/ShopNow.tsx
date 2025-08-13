@@ -1,56 +1,67 @@
 import SectionHeading from "../common/SectionHeading";
 import ProductCard from "../common/ProductCard";
 import Tabs from "./Tabs";
+import Link from "next/link";
 
 const products = [
   {
-    image: "1.png",
+    id: 123,
+image: "1.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "2.png",
+    id: 123,
+image: "2.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "3.png",
+    id: 123,
+image: "3.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "4.png",
+    id: 123,
+image: "4.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "5.png",
+    id: 123,
+image: "5.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "6.png",
+    id: 123,
+image: "6.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
 
   {
-    image: "7.png",
+    id: 123,
+image: "7.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "8.png",
+    id: 123,
+image: "8.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "9.png",
+    id: 123,
+image: "9.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
   {
-    image: "10.png",
+    id: 123,
+image: "10.png",
     name: "Skylaboo Kids Shirt",
     price: "110.00",
   },
@@ -84,6 +95,14 @@ const ShopNow = () => {
               }}
             />
           ))}
+        </div>
+
+        <div className="w-full flex justify-center px-3 mt-6">
+          <Link href={"/shop"}>
+            <button className="cursor-pointer uppercase bg-purple-gradient text-white px-4 py-2 w-[190px] max-w-full rounded-3xl rounded-tl-2xl">
+              View all
+            </button>
+          </Link>
         </div>
       </div>
 
