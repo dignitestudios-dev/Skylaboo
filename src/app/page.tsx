@@ -10,7 +10,7 @@ import React from "react";
 const Home = () => {
   return (
     <div>
-      <WelcomeModal />
+      {/* <WelcomeModal /> */}
       <Hero />
       <NewArrivals />
       <Categories />

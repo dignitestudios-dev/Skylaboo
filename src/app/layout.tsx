@@ -5,6 +5,7 @@ import Footer from "@/components/global/Footer";
 import YellowGlow from "@/components/common/YellowGlow";
 import StoreProvider from "@/components/providers/StoreProvider";
 import CartSlider from "@/components/cart/CartSlider";
+import ToastProvider from "@/components/providers/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Skylaboo",
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={`antialiased flex justify-center overflow-x-hidden`}>
         {/* Redux store provider start */}
         <StoreProvider>
+          <ToastProvider />
           <main className="w-full">
             {/* Yellow Glow */}
             <div className="relative -top-[500px] left-[20%] blur-2xl">

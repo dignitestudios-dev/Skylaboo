@@ -4,8 +4,12 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CartIcon from "../icons/CartIcon";
 import Image from "next/image";
+import { toggleShowCart } from "@/lib/features/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState<string>("");
 
@@ -46,6 +50,10 @@ const Navbar = () => {
       }
       if (hashValue) setActiveLink(`/${hashValue}`);
     }, 30);
+  };
+
+  const handleShowCart = () => {
+    dispatch(toggleShowCart(true));
   };
 
   useEffect(() => {
@@ -122,8 +130,12 @@ const Navbar = () => {
             height={130}
             className="h-[75px] w-full absolute z-10"
           />
-          <button className="bg-[var(--color-yellow)] relative z-20 cursor-pointer w-fit px-4 py-1 rounded-full flex items-center gap-2 me-6">
-            <CartIcon /> <span className="text-white text-xs">{"03"}</span>
+          <button
+            className="bg-[var(--color-yellow)] relative z-20 cursor-pointer w-fit px-4 py-1 rounded-full flex items-center gap-2 me-6"
+            onClick={handleShowCart}
+          >
+            <CartIcon />{" "}
+            <span className="text-white text-xs">{cartItems.length}</span>
           </button>
         </div>
       </nav>

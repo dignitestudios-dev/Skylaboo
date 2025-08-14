@@ -123,13 +123,13 @@ html {
 }
 
 .input-border {
-  position: relative;
-  border-radius: 24px;
-  padding: 2px; /* border thickness */
-  background: linear-gradient(90deg, #ebc501, #ff82e9);
+  position: relative !important;
+  border-radius: 24px !important;
+  padding: 2px !important; /* border thickness */
+  background: linear-gradient(90deg, #ebc501, #ff82e9) !important;
 }
 
-.input-border div {
+.input-border > div {
   border: none;
   border-radius: 24px; /* inner radius = outer radius - padding */
   padding: 8px 12px;

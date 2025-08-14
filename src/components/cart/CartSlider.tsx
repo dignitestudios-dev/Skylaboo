@@ -1,9 +1,12 @@
 "use client";
-import { useAppSelector } from "@/lib/hooks";
-import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import React, { useEffect, useMemo } from "react";
 import CartProduct from "./CartProduct";
 import { Cart } from "@/lib/types";
 import { utils } from "@/lib/utils";
+import { X } from "lucide-react";
+import { toggleShowCart } from "@/lib/features/cartSlice";
+import Link from "next/link";
 
 const cartDummyData: Cart[] = [
   {
@@ -159,26 +162,84 @@ const cartDummyData: Cart[] = [
 ];
 
 const CartSlider = () => {
+  const dispatch = useAppDispatch();
   const { showCart, cartItems } = useAppSelector((state) => state.cart);
 
   useEffect(() => {
     utils.saveCartToLocalStorage(cartDummyData);
   }, []);
 
+  const subtotal = useMemo(() => {
+    const cartItemsWithTotalPrice = cartItems.map((cartItem) => {
+      return {
+        ...cartItem,
+        total: cartItem.price * cartItem.quantity,
+      };
+    });
+
+    return cartItemsWithTotalPrice.reduce(
+      (accumulator, cartItem) => accumulator + cartItem.total,
+      0
+    );
+  }, [cartItems]);
+
+  const handleHideCart = () => {
+    dispatch(toggleShowCart(false));
+  };
+
   return (
-    <aside
-      className={`fixed top-0 ${
-        true ? "right-0" : "right-[-100%]"
-      } z-50 h-full w-[720px] max-w-[90%] overflow-y-auto transition-all duration-500`}
+    <div
+      className={`h-screen w-full flex justify-end fixed top-0 ${
+        showCart ? "right-0" : "right-[-100%]"
+      } z-50 transition-all duration-500`}
+      onClick={handleHideCart}
     >
-      <div className="bg-white min-h-full w-full p-12">
-        {cartItems.map((cartItem, index) => (
-          <div key={index}>
-            <CartProduct cartItem={cartItem} />
+      <aside
+        className={`h-full w-[720px] max-w-[90%] overflow-y-auto`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="bg-white min-h-full w-full py-12">
+          <div className="w-full flex justify-between items-center gap-10 mb-8 px-12">
+            <p className="text-3xl font-georgia ">
+              Cart
+              <span className="gradient-text font-georgia font-black ms-2">
+                ({cartItems.length})
+              </span>
+            </p>
+            <button className="cursor-pointer" onClick={handleHideCart}>
+              <X />
+            </button>
           </div>
-        ))}
-      </div>
-    </aside>
+
+          <div className="px-12">
+            {cartItems.map((cartItem, index) => (
+              <div key={index}>
+                <CartProduct cartItem={cartItem} />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 py-6 border-y border-[#00000033] px-12">
+            <div className="w-full flex justify-between items-center gap-10">
+              <p className="text-sm font-bold">SUBTOTAL</p>
+
+              <p className="font-bold">${subtotal}</p>
+            </div>
+            <p className="text-sm font-extralight text-[#333333] mt-2">
+              SHIPPING & TAXES CALCULATED AT CHECKOUT
+            </p>
+          </div>
+
+          <div className="px-12">
+            <Link href={"/checkout"} onClick={handleHideCart} className="w-full">
+              <button className="uppercase font-bold cursor-pointer text-white rounded-3xl rounded-tl-2xl w-full bg-multi-gradient mt-6 py-4 tracking-wider">
+                Checkout
+              </button>
+            </Link>
+          </div>
+        </div>
+      </aside>
+    </div>
   );
 };
 

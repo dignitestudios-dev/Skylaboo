@@ -37,17 +37,23 @@ const CartProduct: React.FC<CartProductProps> = ({ cartItem }) => {
           Skylaboo {product.title} For Kids
         </p>
         <p className="font-bold">${product.price}</p>
-        <div>
+        <div className="space-y-1">
           <p className="uppercase text-gray-500 font-extralight text-sm">
             Color: {cartItem.selectedColor}
           </p>
           <p className="uppercase text-gray-500 font-extralight text-sm">
             Size: {cartItem.selectedSize}
           </p>
-          <div className="uppercase text-gray-500 font-extralight text-sm">
+          <div className="uppercase text-gray-500 font-extralight text-sm flex items-center gap-3">
             <p>Quantity:</p>{" "}
-            <div>
+            <div className="flex items-center gap-3">
               <button
+                className={`h-5 w-5 flex justify-center cursor-pointer disabled:cursor-not-allowed items-center rounded-sm text-2xl font-extralight ${
+                  cartItem.quantity <= 1
+                    ? "bg-gray-100 text-black"
+                    : "bg-multi-gradient text-white"
+                }`}
+                disabled={cartItem.quantity <= 1}
                 onClick={() =>
                   handleUpdateCartProduct(
                     "dec",
@@ -61,6 +67,11 @@ const CartProduct: React.FC<CartProductProps> = ({ cartItem }) => {
               </button>
               <p>{cartItem.quantity}</p>
               <button
+                className={`h-5 w-5 flex justify-center cursor-pointer disabled:cursor-not-allowed items-center rounded-sm text-xl font-extralight ${
+                  false
+                    ? "bg-gray-100 text-black"
+                    : "bg-multi-gradient text-white"
+                }`}
                 onClick={() =>
                   handleUpdateCartProduct(
                     "inc",

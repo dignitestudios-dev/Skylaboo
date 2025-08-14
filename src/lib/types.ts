@@ -17,10 +17,23 @@ export interface Product {
   isDeleted: string;
 }
 
+interface DeliveryDetails {
+  countryOrRegion: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  apartment: string;
+  city: string;
+  postalCode: string;
+  phone: string;
+}
+
 export interface Cart {
   quantity: number;
   price: number;
   selectedColor: string;
   selectedSize: string;
   product: Product;
+  isDelivery: boolean;
+  delivery: DeliveryDetails;
 }

@@ -161,16 +161,26 @@ const ProductDetails = () => {
                   </button>
                 </div>
                 <Accordion
-                  title="Description"
-                  content="DISCOVER QUALITY CLOTHING DESIGNED FOR COMFORT, STYLE, AND
-                  EVERYDAY WEAR. EACH PIECE IS CRAFTED WITH CARE TO BRING YOU
-                  THE BEST FIT AND FEEL."
-                />
+                  titleNode={<p className="uppercase text-sm">Description</p>}
+                >
+                  <div className="text-gray-500 text-sm !pt-0 uppercase">
+                    DISCOVER QUALITY CLOTHING DESIGNED FOR COMFORT, STYLE, AND
+                    EVERYDAY WEAR. EACH PIECE IS CRAFTED WITH CARE TO BRING YOU
+                    THE BEST FIT AND FEEL.
+                  </div>
+                </Accordion>
 
                 <Accordion
-                  title="shipping AND RETURN"
-                  content="We offer fast, reliable shipping straight to your doorstep. If you’re not fully satisfied with your order, you can easily return or exchange items within [X] days of delivery."
-                />
+                  titleNode={
+                    <p className="uppercase text-sm">Shipping AND RETURN</p>
+                  }
+                >
+                  <div className="text-gray-500 text-sm !pt-0 uppercase">
+                    We offer fast, reliable shipping straight to your doorstep.
+                    If you’re not fully satisfied with your order, you can
+                    easily return or exchange items within [X] days of delivery.
+                  </div>
+                </Accordion>
               </div>
             </div>
           </section>
