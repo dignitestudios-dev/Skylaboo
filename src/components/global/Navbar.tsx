@@ -112,7 +112,7 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="-ms-4 flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
           <Image
             src={"/images/nav-logo.png"}
             alt="Skylaboo"
