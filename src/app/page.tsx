@@ -12,9 +12,11 @@ const Home = () => {
     <div>
       {/* <WelcomeModal /> */}
       <Hero />
-      <NewArrivals />
-      <Categories />
-      <ShopNow />
+      <div className="overflow-hidden">
+        <NewArrivals />
+        <Categories />
+        <ShopNow />
+      </div>
       <About />
       <Contact />
     </div>

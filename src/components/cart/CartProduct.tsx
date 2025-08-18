@@ -24,27 +24,27 @@ const CartProduct: React.FC<CartProductProps> = ({ cartItem }) => {
   };
 
   return (
-    <div className="flex gap-4 py-2">
+    <div className="flex sm:gap-4 gap-2 py-2">
       <div
-        className="w-[200px] h-[200px] rounded-t-[20px] bg-center bg-cover"
+        className="w-[200px] sm:h-[200px] h-[140px] rounded-t-[20px] bg-center bg-cover"
         style={{
           backgroundImage: `url(${product.images[0].link})`,
         }}
       />
 
-      <div className="space-y-2.5">
-        <p className="text-[#333333] font-georgia text-xl">
+      <div className="sm:space-y-2.5">
+        <p className="text-[#333333] font-georgia sm:text-xl">
           Skylaboo {product.title} For Kids
         </p>
         <p className="font-bold">${product.price}</p>
         <div className="space-y-1">
-          <p className="uppercase text-gray-500 font-extralight text-sm">
+          <p className="uppercase text-gray-500 font-extralight sm:text-sm text-xs">
             Color: {cartItem.selectedColor}
           </p>
-          <p className="uppercase text-gray-500 font-extralight text-sm">
+          <p className="uppercase text-gray-500 font-extralight sm:text-sm text-xs">
             Size: {cartItem.selectedSize}
           </p>
-          <div className="uppercase text-gray-500 font-extralight text-sm flex items-center gap-3">
+          <div className="uppercase text-gray-500 font-extralight sm:text-sm text-xs flex items-center gap-3">
             <p>Quantity:</p>{" "}
             <div className="flex items-center gap-3">
               <button
@@ -65,7 +65,9 @@ const CartProduct: React.FC<CartProductProps> = ({ cartItem }) => {
               >
                 -
               </button>
-              <p>{cartItem.quantity}</p>
+              <div className="w-4 flex justify-center">
+                <p>{cartItem.quantity}</p>
+              </div>
               <button
                 className={`h-5 w-5 flex justify-center cursor-pointer disabled:cursor-not-allowed items-center rounded-sm text-xl font-extralight ${
                   false

@@ -26,8 +26,8 @@ export default function RootLayout({
           <ToastProvider />
           <main className="w-full">
             {/* Yellow Glow */}
-            <div className="relative -top-[500px] left-[20%] blur-2xl">
-              <YellowGlow />
+            <div className="absolute z-10 w-full flex justify-center items-center">
+              <div className="min-[1150px]:-mt-[440px] -mt-[200px] w-[70%] min-[1150px]:h-[605px] h-[300px] bg-[var(--color-yellow)]/20 rounded-full blur-3xl" />
             </div>
 
             {/* Common navigation bar */}

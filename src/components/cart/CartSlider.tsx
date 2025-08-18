@@ -198,11 +198,11 @@ const CartSlider = () => {
         className={`h-full w-[720px] max-w-[90%] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-white min-h-full w-full py-12">
-          <div className="w-full flex justify-between items-center gap-10 mb-8 px-12">
-            <p className="text-3xl font-georgia ">
+        <div className="bg-white min-h-full w-full sm:py-12 py-6">
+          <div className="w-full flex justify-between items-center gap-10 mb-8 sm:px-12 min-[425px]:min-[425px]:px-6 px-3 px-3">
+            <p className="sm:text-3xl text-xl font-georgia">
               Cart
-              <span className="gradient-text font-georgia font-black ms-2">
+              <span className="gradient-text font-georgia font-black sm:ms-2 ms-1">
                 ({cartItems.length})
               </span>
             </p>
@@ -211,7 +211,7 @@ const CartSlider = () => {
             </button>
           </div>
 
-          <div className="px-12">
+          <div className="sm:px-12 min-[425px]:px-6 px-3">
             {cartItems.map((cartItem, index) => (
               <div key={index}>
                 <CartProduct cartItem={cartItem} />
@@ -219,7 +219,7 @@ const CartSlider = () => {
             ))}
           </div>
 
-          <div className="mt-12 py-6 border-y border-[#00000033] px-12">
+          <div className="mt-12 py-6 border-y border-[#00000033] sm:px-12 min-[425px]:px-6 px-3">
             <div className="w-full flex justify-between items-center gap-10">
               <p className="text-sm font-bold">SUBTOTAL</p>
 
@@ -230,7 +230,7 @@ const CartSlider = () => {
             </p>
           </div>
 
-          <div className="px-12">
+          <div className="sm:px-12 min-[425px]:px-6 px-3">
             <Link href={"/checkout"} onClick={handleHideCart} className="w-full">
               <button className="uppercase font-bold cursor-pointer text-white rounded-3xl rounded-tl-2xl w-full bg-multi-gradient mt-6 py-4 tracking-wider">
                 Checkout

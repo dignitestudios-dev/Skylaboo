@@ -12,10 +12,10 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Link href={`/shop/${product.id}`} className="w-full">
+    <Link href={`/shop/${product.id}`} className="w-full cursor-pointer">
       <div className="space-y-2">
         <div
-          className="group relative h-[330px] rounded-t-[20px] bg-cover bg-center"
+          className="group relative sm:h-[330px] h-[280px] rounded-t-[20px] bg-cover bg-center"
           style={{
             backgroundImage: `url(${product.image})`,
           }}
