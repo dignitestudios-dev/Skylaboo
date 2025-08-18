@@ -2,11 +2,16 @@
 import React, { useState } from "react";
 
 interface TabsProps {
+  isShopPage?: boolean;
   tabs: string[];
   defaultActive: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, defaultActive }) => {
+const Tabs: React.FC<TabsProps> = ({
+  isShopPage = false,
+  tabs,
+  defaultActive,
+}) => {
   const [activeTab, setActiveTab] = useState<string>(defaultActive);
 
   return (
@@ -18,7 +23,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, defaultActive }) => {
           className={`cursor-pointer disabled:cursor-not-allowed text-[#6C6C6C] sm:text-sm text-xs ${
             activeTab === tab
               ? "text-white bg-multi-gradient"
-              : "bg-[var(--color-purple)]/10"
+              : `${isShopPage ? "bg-white/65" : "bg-[var(--color-purple)]/10"}`
           } rounded-full sm:px-5 px-4 py-2 transition-all duration-500`}
         >
           {tab}

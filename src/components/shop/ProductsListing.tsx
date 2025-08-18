@@ -133,15 +133,18 @@ const tabs = ["All", "Tops", "Bottoms", "Shoes", "Accessories", "Toys"];
 const ProductsListing = () => {
   const pages: number[] = [1, 2, 3, 4, 5];
   return (
-    <section className="relative px-12 overflow-hidden">
+    <section className="relative sm:px-12 px-6 overflow-hidden">
+      {/* Yellow Glow */}
+      <div className="absolute z-10 left-1/3 -top-[200px] w-[700px] h-[700px] bg-multi-gradient opacity-50 rounded-full blur-[150px]" />
+
       {/* Bg Glows */}
       <div className="absolute z-10 -left-[300px] -bottom-12 w-[1400px] h-[1000px] bg-[var(--color-yellow)]/20 rounded-full blur-[120px]" />
       <div className="absolute z-10 -right-[300px] -bottom-12 w-[1400px] h-[1000px] bg-[var(--color-purple)]/20 rounded-full blur-[120px]" />
 
       <div className="relative z-20">
-        <Tabs tabs={tabs} defaultActive="All" />
+        <Tabs isShopPage tabs={tabs} defaultActive="All" />
 
-        <div className="mt-6 grid grid-cols-5 gap-x-3 gap-y-8">
+        <div className="mt-6 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[425px]:grid-cols-2 gap-x-3 gap-y-8">
           {products.map((product, index) => (
             <ProductCard
               key={index}

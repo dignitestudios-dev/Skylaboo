@@ -34,34 +34,34 @@ const WelcomeModal = () => {
         onClick={handleHide}
         className={`fixed top-0 ${show ? "opacity-100" : "opacity-0"} ${
           showDelay ? "block" : "hidden"
-        } left-0 z-40 w-full h-screen bg-black/20 transition-all duration-700`}
+        } left-0 z-40 w-full h-screen bg-black/20 transition-all duration-700 overflow-auto`}
       />
       <div
         onClick={handleHide}
-        className={`flex justify-center items-center fixed ${
+        className={`flex justify-center lg:items-center fixed ${
           show ? "top-0" : "-top-[100%]"
-        } left-0 z-50 w-full h-screen transition-all duration-500`}
+        } left-0 z-50 w-full h-screen transition-all duration-500 py-10 overflow-auto`}
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="bg-white p-5 grid grid-cols-2 gap-5 rounded-4xl h-[80%] w-[80%]"
+          className="bg-white sm:p-5 p-3 grid md:grid-cols-2 gap-5 rounded-4xl h-fit w-[80%]"
         >
           <div
-            className="relative bg-cover bg-center h-full max-w-full rounded-3xl flex justify-center items-center"
+            className="relative bg-cover bg-center md:h-full h-[320px] max-w-full rounded-3xl flex justify-center items-center"
             style={{
               backgroundImage: `url(/images/about.png)`,
             }}
           >
             <PlayButton />
           </div>
-          <div className="flex flex-col gap-5 justify-center items-center px-12">
+          <div className="flex flex-col gap-5 justify-center items-center md:px-6 px-0">
             <Image
               src={"/images/welcome.png"}
               alt="Welcome"
               width={120}
               height={120}
             />
-            <p className="font-sans-bold text-[var(--color-purple)] text-[28px]">
+            <p className="font-sans-bold text-[var(--color-purple)] text-[28px] text-center">
               Welcome to the Skylaboo Family!
             </p>
             <p className="text-[#5C5C5C] text-center">
@@ -85,7 +85,7 @@ const WelcomeModal = () => {
             </Link>
 
             <div>
-              <div className="flex items-center gap-5">
+              <div className="flex items-center sm:justify-start justify-center sm:gap-5 gap-2 md:flex-nowrap flex-wrap">
                 <div className="rounded-full bg-multi-gradient h-[45px] w-[45px] flex justify-center items-center">
                   <div className="rounded-full bg-[#fad1e6] h-[40px] w-[40px] flex justify-center items-center">
                     <Insta />

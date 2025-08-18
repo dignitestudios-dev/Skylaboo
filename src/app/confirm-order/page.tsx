@@ -43,8 +43,49 @@ const ConfirmOrder = () => {
       {/* Yellow Glow */}
       <div className="absolute z-10 left-1/4 -top-28 w-[70%] h-[700px] bg-[#fad0bb]/60 rounded-full blur-[150px]" />
 
-      <div className="relative overflow-hidden px-12 pb-16">
-        <div className="relative z-20 w-full grid grid-cols-2 gap-10">
+      <div className="relative overflow-hidden sm:px-12 px-6 sm:pb-16 pb-8">
+        <div className="relative z-20 w-full grid md:grid-cols-2 gap-10">
+          {/* <div className="md:hidden block bg-white sm:rounded-3xl rounded-2xl sm:p-12 min-[520px]:p-6 p-4 sm:space-y-12 space-y-6">
+            <div className="space-y-8">
+              {cartItems.map((cartItem, index) => (
+                <CheckoutProductCard key={index} cartItem={cartItem} />
+              ))}
+            </div>
+
+            <div className="space-y-3">
+              <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
+
+              <div className="w-full flex justify-between">
+                <p>Subtotal - {cartItems.length} items</p>
+                <p>${subtotal}</p>
+              </div>
+
+              <div className="w-full flex justify-between">
+                <p>Shipping</p>
+                <p>${shipping}</p>
+              </div>
+
+              <div className="text-xl font-bold w-full flex justify-between">
+                <p>Total</p>
+                <p>${subtotal + shipping}</p>
+              </div>
+
+              <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
+            </div>
+
+            <div className="input-border">
+              <div className="bg-[#fff7fe] flex items-start gap-3">
+                <InfoIcon size={52} className="text-[var(--color-purple)]" />
+                <p className="text-[#1C1C1C]">
+                  Lorem ipsum dolor sit amet consectetur. Ut enim lorem at
+                  condimentum pellentesque. Lobortis mattis in et sit tortor
+                  amet et. Eu enim quis sit tristique volutpat magna feugiat
+                  sagittis.
+                </p>
+              </div>
+            </div>
+          </div> */}
+
           <div className="space-y-5">
             <Link href="/checkout" className="flex gap-2 items-center">
               <MoveLeft /> Back
@@ -68,10 +109,10 @@ const ConfirmOrder = () => {
 
             <div className="rounded-t-xl overflow-hidden">
               <div className="bg-white p-2">
-                <p className="text-xl font-black mb-2">Contact</p>
+                <p className="sm:text-xl font-black sm:mb-2">Contact</p>
               </div>
 
-              <div className="bg-[var(--color-purple)]/10 w-full p-6">
+              <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3">
                 <div>
                   <p className="text-xs text-[#707070]">Email</p>
                   <p>john.doe@mail.com</p>
@@ -109,10 +150,10 @@ const ConfirmOrder = () => {
 
             <div className="rounded-t-xl overflow-hidden">
               <div className="bg-white p-2">
-                <p className="text-xl font-black mb-2">Delivery</p>
+                <p className="sm:text-xl font-black sm:mb-2">Delivery</p>
               </div>
 
-              <div className="bg-[var(--color-purple)]/10 w-full p-6 space-y-6">
+              <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3 sm:space-y-6 space-y-3">
                 <div>
                   <p className="text-xs text-[#707070]">Address</p>
                   <p>742 Evergreen Terrace</p>
@@ -183,7 +224,7 @@ const ConfirmOrder = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-12 space-y-12">
+          <div className="bg-white sm:rounded-3xl rounded-2xl sm:p-12 min-[520px]:p-6 p-4 sm:space-y-12 space-y-6">
             <div className="space-y-8">
               {cartItems.map((cartItem, index) => (
                 <CheckoutProductCard key={index} cartItem={cartItem} />
@@ -203,7 +244,7 @@ const ConfirmOrder = () => {
                 <p>${shipping}</p>
               </div>
 
-              <div className="text-xl font-bold w-full flex justify-between">
+              <div className="sm:text-xl font-bold w-full flex justify-between">
                 <p>Total</p>
                 <p>${subtotal + shipping}</p>
               </div>

@@ -40,13 +40,13 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="mt-6 relative">
+    <div className="lg:mt-6 mt-24 relative">
       {/* Yellow Glow */}
       <div className="absolute z-10 left-1/4 -top-12 w-[70%] h-[700px] bg-[#fad0bb]/60 rounded-full blur-[150px]" />
 
-      <div className=" px-12 relative overflow-hidden">
+      <div className="relative overflow-hidden">
         <div className="relative z-20">
-          <div className="flex items-center gap-2 uppercase text-sm text-[#333333]">
+          <div className="sm:px-12 px-6 flex items-center sm:flex-nowrap flex-wrap gap-2 uppercase sm:text-sm text-xs text-[#333333]">
             <Link href={"/"}>Home</Link>
             <ChevronRight size={16} />
             <Link href={"/shop"}>Shop</Link>
@@ -54,15 +54,15 @@ const ProductDetails = () => {
             <p>Baby Summer 2025 Delivery II</p>
           </div>
 
-          <section id="about" className="py-6 relative overflow-hidden">
-            <div className="relative z-20 grid grid-cols-2 gap-20 mb-10">
+          <section id="about" className="sm:px-12 px-6 py-6 relative overflow-hidden">
+            <div className="relative z-20 grid sm:grid-cols-2 lg:gap-20 gap-10 mb-10">
               <div
-                className="relative bg-cover bg-center h-full min-h-[600px] w-full rounded-3xl flex justify-center items-center"
+                className="relative bg-cover bg-center md:h-full sm:h-fit min-[425px]:h-[80vh] h-[280px] sm:min-h-[600px] min-[425px]:min-h-[300px] min-w-[220px] w-full rounded-3xl flex justify-center items-center"
                 style={{
                   backgroundImage: `url(/images/about.png)`,
                 }}
               />
-              <div className="flex flex-col justify-center gap-6">
+              <div className="flex flex-col justify-center lg:gap-6 gap-3">
                 <p className="text-sm text-[#333333]">
                   Skylaboo Baby Summer 2025 Delivery II
                 </p>
@@ -73,11 +73,11 @@ const ProductDetails = () => {
                 <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
                 <div>
                   <p className="uppercase text-sm">Color</p>
-                  <div className="mt-2 space-x-4">
+                  <div className="mt-2 flex md:gap-4 gap-2 flex-wrap">
                     {colors.map((color, index) => (
                       <button
                         key={index}
-                        className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-3 px-4 font-medium cursor-pointer w-[75px] ${
+                        className={`rounded-3xl rounded-bl-2xl md:rounded-tl-[28px] rounded-tl-[24px] text-xs border border-white md:py-3 py-1.5 md:px-4 px-2 font-medium cursor-pointer md:w-[75px] w-14 ${
                           selectedDetails.color === color
                             ? "text-white bg-multi-gradient"
                             : "text-[#333333] bg-transparent"
@@ -93,11 +93,11 @@ const ProductDetails = () => {
                 </div>
                 <div>
                   <p className="uppercase text-sm">sizes</p>
-                  <div className="mt-2 space-x-4">
+                  <div className="mt-2 flex md:gap-4 gap-2 flex-wrap">
                     {sizes.map((size, index) => (
                       <button
                         key={index}
-                        className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-3 px-4 font-medium cursor-pointer w-[75px] ${
+                        className={`rounded-3xl rounded-bl-2xl md:rounded-tl-[28px] rounded-tl-[24px] text-xs border border-white md:py-3 py-1.5 md:px-4 px-2 font-medium cursor-pointer md:w-[75px] w-14 ${
                           selectedDetails.size === size
                             ? "text-white bg-multi-gradient"
                             : "text-[#333333] bg-transparent"
@@ -109,7 +109,7 @@ const ProductDetails = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center gap-5">
+                <div className="flex min-[680px]:flex-row sm:flex-col min-[470px]:flex-row flex-col  min-[680px]:items-center gap-5">
                   <div className="rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-sm bg-multi-gradient h-full w-full max-w-[180px] font-medium cursor-pointer overflow-hidden flex justify-between">
                     <button
                       className={`h-full px-4 bg-[var(--color-yellow)] font-bold ${
@@ -122,7 +122,7 @@ const ProductDetails = () => {
                     >
                       -
                     </button>
-                    <div className="flex-1/2 h-full flex justify-center items-center bg-white/35">
+                    <div className="flex-1/2 h-full flex justify-center items-center bg-white/35 min-w-6">
                       <p>
                         {selectedDetails.quantity < 10
                           ? `0${selectedDetails.quantity}`
@@ -137,28 +137,30 @@ const ProductDetails = () => {
                     </button>
                   </div>
 
-                  <button className="cursor-pointer uppercase bg-purple-gradient text-white px-4 py-2 w-[280px] max-w-full rounded-3xl rounded-tl-2xl rounded-bl-[30px]">
-                    Add to Card
+                  <button className="text-nowrap cursor-pointer uppercase bg-purple-gradient text-white px-4 py-2 min-[425px]:w-[280px] w-[240px] max-w-full rounded-3xl rounded-tl-2xl rounded-bl-[30px] md:text-base text-sm">
+                    Add to Cart
                   </button>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex md:flex-row flex-col md:items-center sm:gap-4 gap-2">
                   <p className="uppercase font-black text-sm">
                     Receiving Options:
                   </p>
 
-                  <button
-                    className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
-                  >
-                    <Check />
-                    Delivery
-                  </button>
+                  <div className="flex items-center gap-4">
+                    <button
+                      className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
+                    >
+                      <Check />
+                      Delivery
+                    </button>
 
-                  <button
-                    className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
-                  >
-                    <Check />
-                    Pickup
-                  </button>
+                    <button
+                      className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
+                    >
+                      <Check />
+                      Pickup
+                    </button>
+                  </div>
                 </div>
                 <Accordion
                   titleNode={<p className="uppercase text-sm">Description</p>}
@@ -187,7 +189,7 @@ const ProductDetails = () => {
 
           <NewArrivals />
 
-          <div className="w-full flex justify-center px-3 mb-12">
+          <div className="sm:px-12 px-6 w-full flex justify-center px-3 mb-12">
             <Link href={"/shop"}>
               <button className="cursor-pointer uppercase bg-purple-gradient text-white px-4 py-2 w-[190px] max-w-full rounded-3xl rounded-tl-2xl">
                 View all

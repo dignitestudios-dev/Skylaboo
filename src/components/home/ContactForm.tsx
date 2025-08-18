@@ -38,7 +38,6 @@ const ContactForm = () => {
             />
           </div>
         </div>
-
         <div className="bg-multi-gradient p-0.5 rounded-full sm:w-[415px] min-[425px]:w-[320px] min-[375px]:w-[240px] w-[220px] max-w-full h-[48px]">
           <div className="rounded-full bg-[#fedffb] w-full h-full flex items-center gap-2 px-3">
             <Message />
@@ -53,7 +52,6 @@ const ContactForm = () => {
             />
           </div>
         </div>
-
         <div className="bg-multi-gradient p-0.5 overflow-hidden rounded-3xl sm:w-[415px] min-[425px]:w-[320px] min-[375px]:w-[240px] w-[220px] max-w-full">
           <div className="rounded-3xl bg-[#fedffb] w-full h-full flex items-start gap-2 px-3 py-4">
             <Edit />
@@ -67,6 +65,9 @@ const ContactForm = () => {
             />
           </div>
         </div>
+        <button className="cursor-pointer uppercase bg-[var(--color-purple)] text-white px-4 py-2 w-full rounded-3xl rounded-tl-2xl">
+          Submit
+        </button>
       </form>
     </div>
   );

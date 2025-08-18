@@ -42,7 +42,7 @@ const Footer = () => {
               Contact us
             </p>
             <div className="flex items-center gap-2">
-              <Phone />
+              {/* <Phone /> */}
               <p>10 (87) 738-3940</p>
             </div>
           </div>
