@@ -20,14 +20,8 @@ const cartDummyData: Cart[] = [
       stock: 10,
       price: 25,
       images: [
-        {
-          link: "/images/products/1.png",
-          isFeatured: true,
-        },
-        {
-          link: "/images/products/1.png",
-          isFeatured: false,
-        },
+        { link: "/images/products/1.png", isFeatured: true },
+        { link: "/images/products/1.png", isFeatured: false },
       ],
       category: "Clothing",
       isFeatured: "true",
@@ -37,7 +31,18 @@ const cartDummyData: Cart[] = [
     quantity: 2,
     price: 25,
     selectedColor: "Blue",
-    selectedSize: "3-9",
+    selectedSize: "M",
+    isDelivery: true,
+    delivery: {
+      countryOrRegion: "Pakistan",
+      firstName: "Ali",
+      lastName: "Khan",
+      address: "123 Main Street",
+      apartment: "A-1",
+      city: "Karachi",
+      postalCode: "74000",
+      phone: "03001234567",
+    },
   },
   {
     product: {
@@ -50,14 +55,8 @@ const cartDummyData: Cart[] = [
       stock: 5,
       price: 50,
       images: [
-        {
-          link: "/images/products/2.png",
-          isFeatured: true,
-        },
-        {
-          link: "/images/products/2.png",
-          isFeatured: false,
-        },
+        { link: "/images/products/2.png", isFeatured: true },
+        { link: "/images/products/2.png", isFeatured: false },
       ],
       category: "Clothing",
       isFeatured: "true",
@@ -67,7 +66,18 @@ const cartDummyData: Cart[] = [
     quantity: 1,
     price: 50,
     selectedColor: "Red",
-    selectedSize: "3-5",
+    selectedSize: "L",
+    isDelivery: false,
+    delivery: {
+      countryOrRegion: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      apartment: "",
+      city: "",
+      postalCode: "",
+      phone: "",
+    },
   },
   {
     product: {
@@ -80,14 +90,8 @@ const cartDummyData: Cart[] = [
       stock: 8,
       price: 75,
       images: [
-        {
-          link: "/images/products/3.png",
-          isFeatured: true,
-        },
-        {
-          link: "/images/products/3.png",
-          isFeatured: false,
-        },
+        { link: "/images/products/3.png", isFeatured: true },
+        { link: "/images/products/3.png", isFeatured: false },
       ],
       category: "Footwear",
       isFeatured: "true",
@@ -97,7 +101,18 @@ const cartDummyData: Cart[] = [
     quantity: 1,
     price: 75,
     selectedColor: "Black",
-    selectedSize: "1-3",
+    selectedSize: "42",
+    isDelivery: true,
+    delivery: {
+      countryOrRegion: "Pakistan",
+      firstName: "Sara",
+      lastName: "Ahmed",
+      address: "456 Park Avenue",
+      apartment: "B-2",
+      city: "Lahore",
+      postalCode: "54000",
+      phone: "03007654321",
+    },
   },
   {
     product: {
@@ -110,14 +125,8 @@ const cartDummyData: Cart[] = [
       stock: 15,
       price: 30,
       images: [
-        {
-          link: "/images/products/4.png",
-          isFeatured: true,
-        },
-        {
-          link: "/images/products/4.png",
-          isFeatured: false,
-        },
+        { link: "/images/products/4.png", isFeatured: true },
+        { link: "/images/products/4.png", isFeatured: false },
       ],
       category: "Accessories",
       isFeatured: "true",
@@ -127,11 +136,22 @@ const cartDummyData: Cart[] = [
     quantity: 1,
     price: 30,
     selectedColor: "Brown",
-    selectedSize: "12-18",
+    selectedSize: "One Size",
+    isDelivery: false,
+    delivery: {
+      countryOrRegion: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      apartment: "",
+      city: "",
+      postalCode: "",
+      phone: "",
+    },
   },
   {
     product: {
-      _id: "123456",
+      _id: "123457",
       title: "Smart Watch",
       subtitle: "Advanced features and sleek design",
       description: "A smart watch with multiple functionalities.",
@@ -140,14 +160,8 @@ const cartDummyData: Cart[] = [
       stock: 3,
       price: 150,
       images: [
-        {
-          link: "/images/products/5.png",
-          isFeatured: true,
-        },
-        {
-          link: "/images/products/5.png",
-          isFeatured: false,
-        },
+        { link: "/images/products/5.png", isFeatured: true },
+        { link: "/images/products/5.png", isFeatured: false },
       ],
       category: "Electronics",
       isFeatured: "true",
@@ -157,7 +171,18 @@ const cartDummyData: Cart[] = [
     quantity: 1,
     price: 150,
     selectedColor: "Silver",
-    selectedSize: "6-9",
+    selectedSize: "Adjustable",
+    isDelivery: true,
+    delivery: {
+      countryOrRegion: "Pakistan",
+      firstName: "Usman",
+      lastName: "Raza",
+      address: "789 Tech Street",
+      apartment: "C-3",
+      city: "Islamabad",
+      postalCode: "44000",
+      phone: "03009876543",
+    },
   },
 ];
 
@@ -199,7 +224,7 @@ const CartSlider = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-white min-h-full w-full sm:py-12 py-6">
-          <div className="w-full flex justify-between items-center gap-10 mb-8 sm:px-12 min-[425px]:min-[425px]:px-6 px-3 px-3">
+          <div className="w-full flex justify-between items-center gap-10 mb-8 sm:px-12 min-[425px]:min-[425px]:px-6 px-3">
             <p className="sm:text-3xl text-xl font-georgia">
               Cart
               <span className="gradient-text font-georgia font-black sm:ms-2 ms-1">
@@ -231,7 +256,11 @@ const CartSlider = () => {
           </div>
 
           <div className="sm:px-12 min-[425px]:px-6 px-3">
-            <Link href={"/checkout"} onClick={handleHideCart} className="w-full">
+            <Link
+              href={"/checkout"}
+              onClick={handleHideCart}
+              className="w-full"
+            >
               <button className="uppercase font-bold cursor-pointer text-white rounded-3xl rounded-tl-2xl w-full bg-multi-gradient mt-6 py-4 tracking-wider">
                 Checkout
               </button>
