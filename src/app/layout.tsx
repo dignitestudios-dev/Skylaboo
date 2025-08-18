@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
-import YellowGlow from "@/components/common/YellowGlow";
 import StoreProvider from "@/components/providers/StoreProvider";
 import CartSlider from "@/components/cart/CartSlider";
 import ToastProvider from "@/components/providers/ToastProvider";
@@ -11,6 +10,9 @@ export const metadata: Metadata = {
   title: "Skylaboo",
   description:
     "Explore the second iteration of Women Summer 2025, highlighted by collaborations with PUMA and AKILA.",
+  icons: {
+    icon: "/images/logo.webp",
+  },
 };
 
 export default function RootLayout({
