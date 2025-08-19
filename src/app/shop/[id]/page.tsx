@@ -4,12 +4,17 @@ import NewArrivals from "@/components/home/NewArrivals";
 import Check from "@/components/icons/Check";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const colors = ["Red", "Green", "Blue", "White", "Black"];
 const sizes = ["0-3", "3-6", "6-9", "9-12", "12-18"];
 
 const ProductDetails = () => {
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+
   const [selectedDetails, setSelectedDetails] = useState({
     color: "Red",
     size: "0-3",
@@ -54,14 +59,56 @@ const ProductDetails = () => {
             <p>Baby Summer 2025 Delivery II</p>
           </div>
 
-          <section id="about" className="sm:px-12 px-6 py-6 relative overflow-hidden">
+          <section
+            id="about"
+            className="sm:px-12 px-6 py-6 relative overflow-hidden"
+          >
             <div className="relative z-20 grid sm:grid-cols-2 lg:gap-20 gap-10 mb-10">
-              <div
-                className="relative bg-cover bg-center md:h-full sm:h-fit min-[425px]:h-[80vh] h-[280px] sm:min-h-[600px] min-[425px]:min-h-[300px] min-w-[220px] w-full rounded-3xl flex justify-center items-center"
-                style={{
-                  backgroundImage: `url(/images/about.png)`,
-                }}
-              />
+              <div>
+                <Swiper
+                  modules={[Navigation, Pagination]}
+                  spaceBetween={20}
+                  slidesPerView={1}
+                  autoplay={{
+                    delay: 1000,
+                  }}
+                  navigation={{
+                    prevEl: prevRef.current,
+                    nextEl: nextRef.current,
+                  }}
+                  onInit={(swiper) => {
+                    // Type assertion to safely access navigation params
+                    if (
+                      swiper.params.navigation &&
+                      typeof swiper.params.navigation === "object"
+                    ) {
+                      swiper.params.navigation.prevEl = prevRef.current;
+                      swiper.params.navigation.nextEl = nextRef.current;
+                      swiper.navigation.init();
+                      swiper.navigation.update();
+                    }
+                  }}
+                  className="px-12"
+                >
+                  <SwiperSlide>
+                    <div
+                      className="relative bg-contain bg-no-repeat bg-gray-100 bg-center md:h-full sm:h-fit min-[425px]:h-[80vh] h-[280px] sm:min-h-[600px] min-[425px]:min-h-[300px] min-w-[220px] w-full rounded-3xl flex justify-center items-center"
+                      style={{
+                        backgroundImage: `url(/images/about.png)`,
+                      }}
+                    />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <div
+                      className="relative bg-contain bg-no-repeat bg-gray-100 bg-center md:h-full sm:h-fit min-[425px]:h-[80vh] h-[280px] sm:min-h-[600px] min-[425px]:min-h-[300px] min-w-[220px] w-full rounded-3xl flex justify-center items-center"
+                      style={{
+                        backgroundImage: `url(/images/about.png)`,
+                      }}
+                    />
+                  </SwiperSlide>
+                </Swiper>
+              </div>
+
               <div className="flex flex-col justify-center lg:gap-6 gap-3">
                 <p className="text-sm text-[#333333]">
                   Skylaboo Baby Summer 2025 Delivery II
@@ -189,7 +236,7 @@ const ProductDetails = () => {
 
           <NewArrivals />
 
-          <div className="sm:px-12 px-6 w-full flex justify-center px-3 mb-12">
+          <div className="sm:px-12 px-6 w-full flex justify-center mb-12">
             <Link href={"/shop"}>
               <button className="cursor-pointer uppercase bg-purple-gradient text-white px-4 py-2 w-[190px] max-w-full rounded-3xl rounded-tl-2xl">
                 View all
