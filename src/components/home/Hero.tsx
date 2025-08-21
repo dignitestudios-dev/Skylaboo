@@ -3,8 +3,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
+import Link from "next/link";
 
 const Hero = () => {
   const prevRef = useRef<HTMLButtonElement>(null);
@@ -16,12 +17,13 @@ const Hero = () => {
   return (
     <section className="relative w-full min-h-[95vh] flex items-center bg-gradient-to-b from-transparent to-[#e9e2d4] sm:px-12 px-6">
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}
         slidesPerView={1}
         navigation={false}
+        loop={true}
         autoplay={{
-          delay: 1000,
+          delay: 5000,
         }}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -52,7 +54,9 @@ const Hero = () => {
                 with PUMA and AKILA.
               </p>
               <div className="lg:block flex justify-center">
-                <button className="uppercase purple-btn">Shop now</button>
+                <Link href={"/shop"}>
+                  <button className="uppercase purple-btn cursor-pointer">Shop now</button>
+                </Link>
               </div>
             </div>
 
@@ -83,7 +87,9 @@ const Hero = () => {
                 with PUMA and AKILA.
               </p>
               <div className="lg:block flex justify-center">
-                <button className="uppercase purple-btn">Shop now</button>
+                <Link href={"/shop"}>
+                  <button className="uppercase purple-btn cursor-pointer">Shop now</button>
+                </Link>
               </div>
             </div>
 

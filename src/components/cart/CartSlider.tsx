@@ -8,197 +8,15 @@ import { X } from "lucide-react";
 import { toggleShowCart } from "@/lib/features/cartSlice";
 import Link from "next/link";
 
-const cartDummyData: Cart[] = [
-  {
-    product: {
-      _id: "123",
-      title: "Stylish Shirt",
-      subtitle: "Comfortable and trendy",
-      description: "A stylish shirt made from high-quality fabric.",
-      colors: ["Blue", "Black"],
-      sizes: ["S", "M", "L"],
-      stock: 10,
-      price: 25,
-      images: [
-        { link: "/images/products/1.png", isFeatured: true },
-        { link: "/images/products/1.png", isFeatured: false },
-      ],
-      category: "Clothing",
-      isFeatured: "true",
-      isActive: "true",
-      isDeleted: "false",
-    },
-    quantity: 2,
-    price: 25,
-    selectedColor: "Blue",
-    selectedSize: "M",
-    isDelivery: true,
-    delivery: {
-      countryOrRegion: "Pakistan",
-      firstName: "Ali",
-      lastName: "Khan",
-      address: "123 Main Street",
-      apartment: "A-1",
-      city: "Karachi",
-      postalCode: "74000",
-      phone: "03001234567",
-    },
-  },
-  {
-    product: {
-      _id: "1234",
-      title: "Elegant Dress",
-      subtitle: "Perfect for special occasions",
-      description: "An elegant dress with a modern design.",
-      colors: ["Red", "Pink"],
-      sizes: ["M", "L"],
-      stock: 5,
-      price: 50,
-      images: [
-        { link: "/images/products/2.png", isFeatured: true },
-        { link: "/images/products/2.png", isFeatured: false },
-      ],
-      category: "Clothing",
-      isFeatured: "true",
-      isActive: "true",
-      isDeleted: "false",
-    },
-    quantity: 1,
-    price: 50,
-    selectedColor: "Red",
-    selectedSize: "L",
-    isDelivery: false,
-    delivery: {
-      countryOrRegion: "",
-      firstName: "",
-      lastName: "",
-      address: "",
-      apartment: "",
-      city: "",
-      postalCode: "",
-      phone: "",
-    },
-  },
-  {
-    product: {
-      _id: "12345",
-      title: "Running Shoes",
-      subtitle: "Comfortable and durable",
-      description: "High-quality running shoes for everyday use.",
-      colors: ["Black", "White"],
-      sizes: ["40", "42", "44"],
-      stock: 8,
-      price: 75,
-      images: [
-        { link: "/images/products/3.png", isFeatured: true },
-        { link: "/images/products/3.png", isFeatured: false },
-      ],
-      category: "Footwear",
-      isFeatured: "true",
-      isActive: "true",
-      isDeleted: "false",
-    },
-    quantity: 1,
-    price: 75,
-    selectedColor: "Black",
-    selectedSize: "42",
-    isDelivery: true,
-    delivery: {
-      countryOrRegion: "Pakistan",
-      firstName: "Sara",
-      lastName: "Ahmed",
-      address: "456 Park Avenue",
-      apartment: "B-2",
-      city: "Lahore",
-      postalCode: "54000",
-      phone: "03007654321",
-    },
-  },
-  {
-    product: {
-      _id: "123456",
-      title: "Leather Wallet",
-      subtitle: "Stylish and practical",
-      description: "A premium leather wallet with multiple compartments.",
-      colors: ["Brown", "Black"],
-      sizes: ["One Size"],
-      stock: 15,
-      price: 30,
-      images: [
-        { link: "/images/products/4.png", isFeatured: true },
-        { link: "/images/products/4.png", isFeatured: false },
-      ],
-      category: "Accessories",
-      isFeatured: "true",
-      isActive: "true",
-      isDeleted: "false",
-    },
-    quantity: 1,
-    price: 30,
-    selectedColor: "Brown",
-    selectedSize: "One Size",
-    isDelivery: false,
-    delivery: {
-      countryOrRegion: "",
-      firstName: "",
-      lastName: "",
-      address: "",
-      apartment: "",
-      city: "",
-      postalCode: "",
-      phone: "",
-    },
-  },
-  {
-    product: {
-      _id: "123457",
-      title: "Smart Watch",
-      subtitle: "Advanced features and sleek design",
-      description: "A smart watch with multiple functionalities.",
-      colors: ["Silver", "Black"],
-      sizes: ["Adjustable"],
-      stock: 3,
-      price: 150,
-      images: [
-        { link: "/images/products/5.png", isFeatured: true },
-        { link: "/images/products/5.png", isFeatured: false },
-      ],
-      category: "Electronics",
-      isFeatured: "true",
-      isActive: "true",
-      isDeleted: "false",
-    },
-    quantity: 1,
-    price: 150,
-    selectedColor: "Silver",
-    selectedSize: "Adjustable",
-    isDelivery: true,
-    delivery: {
-      countryOrRegion: "Pakistan",
-      firstName: "Usman",
-      lastName: "Raza",
-      address: "789 Tech Street",
-      apartment: "C-3",
-      city: "Islamabad",
-      postalCode: "44000",
-      phone: "03009876543",
-    },
-  },
-];
-
 const CartSlider = () => {
   const dispatch = useAppDispatch();
-  const { showCart, cartItems } = useAppSelector((state) => state.cart);
-
-  useEffect(() => {
-    utils.saveCartToLocalStorage(cartDummyData);
-  }, []);
+  const { showCart, cart } = useAppSelector((state) => state.cart);
 
   const subtotal = useMemo(() => {
-    const cartItemsWithTotalPrice = cartItems.map((cartItem) => {
+    const cartItemsWithTotalPrice = cart?.products?.map((cartItem) => {
       return {
         ...cartItem,
-        total: cartItem.price * cartItem.quantity,
+        total: cartItem.product.price * cartItem.quantity,
       };
     });
 
@@ -206,7 +24,7 @@ const CartSlider = () => {
       (accumulator, cartItem) => accumulator + cartItem.total,
       0
     );
-  }, [cartItems]);
+  }, [cart]);
 
   const handleHideCart = () => {
     dispatch(toggleShowCart(false));
@@ -228,7 +46,7 @@ const CartSlider = () => {
             <p className="sm:text-3xl text-xl font-georgia">
               Cart
               <span className="gradient-text font-georgia font-black sm:ms-2 ms-1">
-                ({cartItems.length})
+                ({cart?.products?.length})
               </span>
             </p>
             <button className="cursor-pointer" onClick={handleHideCart}>
@@ -237,35 +55,45 @@ const CartSlider = () => {
           </div>
 
           <div className="sm:px-12 min-[425px]:px-6 px-3">
-            {cartItems.map((cartItem, index) => (
-              <div key={index}>
-                <CartProduct cartItem={cartItem} />
+            {!cart?.products || !cart?.products?.length ? (
+              <p className="text-gray-400">Your cart is empty</p>
+            ) : (
+              cart?.products?.map((cartProduct, index) => (
+                <div key={index}>
+                  <CartProduct cartProduct={cartProduct} />
+                </div>
+              ))
+            )}
+          </div>
+
+          {cart?.products && cart?.products.length ? (
+            <>
+              <div className="mt-12 py-6 border-y border-[#00000033] sm:px-12 min-[425px]:px-6 px-3">
+                <div className="w-full flex justify-between items-center gap-10">
+                  <p className="text-sm font-bold">SUBTOTAL</p>
+
+                  <p className="font-bold">${subtotal.toFixed(2)}</p>
+                </div>
+                <p className="text-sm font-extralight text-[#333333] mt-2">
+                  SHIPPING & TAXES CALCULATED AT CHECKOUT
+                </p>
               </div>
-            ))}
-          </div>
 
-          <div className="mt-12 py-6 border-y border-[#00000033] sm:px-12 min-[425px]:px-6 px-3">
-            <div className="w-full flex justify-between items-center gap-10">
-              <p className="text-sm font-bold">SUBTOTAL</p>
-
-              <p className="font-bold">${subtotal}</p>
-            </div>
-            <p className="text-sm font-extralight text-[#333333] mt-2">
-              SHIPPING & TAXES CALCULATED AT CHECKOUT
-            </p>
-          </div>
-
-          <div className="sm:px-12 min-[425px]:px-6 px-3">
-            <Link
-              href={"/checkout"}
-              onClick={handleHideCart}
-              className="w-full"
-            >
-              <button className="uppercase font-bold cursor-pointer text-white rounded-3xl rounded-tl-2xl w-full bg-multi-gradient mt-6 py-4 tracking-wider">
-                Checkout
-              </button>
-            </Link>
-          </div>
+              <div className="sm:px-12 min-[425px]:px-6 px-3">
+                <Link
+                  href={"/checkout"}
+                  onClick={handleHideCart}
+                  className="w-full"
+                >
+                  <button className="uppercase font-bold cursor-pointer text-white rounded-3xl rounded-tl-2xl w-full bg-multi-gradient mt-6 py-4 tracking-wider">
+                    Checkout
+                  </button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </aside>
     </div>

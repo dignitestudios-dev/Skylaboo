@@ -1,18 +1,17 @@
 "use client";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import Accordion from "@/components/common/Accordion";
 import React, { useMemo, useState } from "react";
-import PaymentForm from "@/components/checkout/PaymentForm";
 import { InfoIcon } from "lucide-react";
 import CheckoutProductCard from "@/components/checkout/CheckoutProductCard";
 import { useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
 import Modal from "@/components/common/Modal";
+import Navbar from "@/components/global/Navbar";
+import Footer from "@/components/global/Footer";
 
 const Checkout = () => {
   const [isDelivery, setIsDelivery] = useState<boolean>(true);
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const { cart } = useAppSelector((state) => state.cart);
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
     "hide"
@@ -23,10 +22,10 @@ const Checkout = () => {
 
   const shipping = 50;
   const subtotal = useMemo(() => {
-    const cartItemsWithTotalPrice = cartItems.map((cartItem) => {
+    const cartItemsWithTotalPrice = cart.products.map((cartProduct) => {
       return {
-        ...cartItem,
-        total: cartItem.price * cartItem.quantity,
+        ...cartProduct,
+        total: cartProduct.product.price * cartProduct.quantity,
       };
     });
 
@@ -34,59 +33,20 @@ const Checkout = () => {
       (accumulator, cartItem) => accumulator + cartItem.total,
       0
     );
-  }, [cartItems]);
+  }, [cart]);
 
   //   my project is an ecommerece platform. Users selects products and then enter delivery address and the stripe elements is showing the input to enter card, these are done. Now there is a Review Order button then the user redirect to the Review Order page showing the card details order details and delivery details then user clicks on Checkout then payment deduct. Now tell me how this will happen
 
   return (
     <>
+      {/* Common navigation bar */}
+      <Navbar />
       <div className="relative mt-20">
         {/* Yellow Glow */}
         <div className="absolute z-10 left-1/4 -top-12 w-[70%] h-[700px] bg-[#fad0bb]/60 rounded-full blur-[150px]" />
 
         <div className="relative overflow-hidden sm:px-12 px-6 sm:pb-16 pb-8">
           <div className="relative z-20 w-full grid md:grid-cols-2 gap-10">
-            {/* <div className="md:hidden block bg-white sm:rounded-3xl rounded-2xl sm:p-12 min-[520px]:p-6 p-4 sm:space-y-12 space-y-6">
-            <div className="sm:space-y-8 space-y-4">
-              {cartItems.map((cartItem, index) => (
-                <CheckoutProductCard key={index} cartItem={cartItem} />
-              ))}
-            </div>
-
-            <div className="space-y-3">
-              <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
-
-              <div className="w-full flex justify-between">
-                <p>Subtotal - {cartItems.length} items</p>
-                <p>${subtotal}</p>
-              </div>
-
-              <div className="w-full flex justify-between">
-                <p>Shipping</p>
-                <p>${shipping}</p>
-              </div>
-
-              <div className="text-xl font-bold w-full flex justify-between">
-                <p>Total</p>
-                <p>${subtotal + shipping}</p>
-              </div>
-
-              <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
-            </div>
-
-            <div className="input-border">
-              <div className="bg-[#fff7fe] flex items-start gap-3">
-                <InfoIcon size={52} className="text-[var(--color-purple)]" />
-                <p className="text-[#1C1C1C]">
-                  Lorem ipsum dolor sit amet consectetur. Ut enim lorem at
-                  condimentum pellentesque. Lobortis mattis in et sit tortor
-                  amet et. Eu enim quis sit tristique volutpat magna feugiat
-                  sagittis.
-                </p>
-              </div>
-            </div>
-          </div> */}
-
             <div className="space-y-5">
               <div>
                 <p className="sm:text-xl font-bold mb-2">Contact</p>
@@ -330,8 +290,8 @@ const Checkout = () => {
 
             <div className="bg-white sm:rounded-3xl rounded-2xl sm:p-12 min-[520px]:p-6 p-4 sm:space-y-12 space-y-6">
               <div className="space-y-8">
-                {cartItems.map((cartItem, index) => (
-                  <CheckoutProductCard key={index} cartItem={cartItem} />
+                {cart?.products?.map((cartProduct, index) => (
+                  <CheckoutProductCard key={index} cartProduct={cartProduct} />
                 ))}
               </div>
 
@@ -339,7 +299,7 @@ const Checkout = () => {
                 <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
 
                 <div className="w-full flex justify-between">
-                  <p>Subtotal - {cartItems.length} items</p>
+                  <p>Subtotal - {cart?.products?.length} items</p>
                   <p>${subtotal}</p>
                 </div>
 
@@ -469,6 +429,8 @@ const Checkout = () => {
           </p>
         </div>
       </Modal>
+      {/* Common footer */}
+      <Footer />
     </>
   );
 };

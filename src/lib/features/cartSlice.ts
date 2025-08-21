@@ -1,29 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Cart, Product } from "../types";
+import { Cart, CartProduct, Product } from "../types";
 import { utils } from "../utils";
+import toast from "react-hot-toast";
 
 interface InitialState {
   showCart: boolean;
-  cartItems: Cart[];
+  cart: Cart;
 }
 
 // Initial state
 const initialState: InitialState = {
   showCart: false,
-  cartItems: utils.loadCartFromLocalStorage(),
+  cart: utils.loadCartFromLocalStorage(),
 };
 
-// Create the user slice
+// Create the cart slice
 const cartSlice = createSlice({
-  name: "user",
+  name: "cart", // Changed from "user" to "cart" for better naming
   initialState,
   reducers: {
     toggleShowCart: (state, action: PayloadAction<boolean>) => {
       state.showCart = action.payload;
     },
 
-    addProductToCart: (state, action: PayloadAction<Cart>) => {
-      const existingProductIndex = state.cartItems.findIndex(
+    addProductToCart: (state, action: PayloadAction<CartProduct>) => {
+      const existingProductIndex = state.cart.products.findIndex(
         (item) =>
           item.product._id === action.payload.product._id &&
           item.selectedColor === action.payload.selectedColor &&
@@ -31,13 +32,42 @@ const cartSlice = createSlice({
       );
 
       if (existingProductIndex !== -1) {
-        state.cartItems[existingProductIndex].quantity +=
-          action.payload.quantity;
+        // Product already exists in cart - show toast message instead of adding
+        toast.error("Already in the cart");
       } else {
-        state.cartItems.push(action.payload);
+        // Add new product to cart
+        state.cart.products.push(action.payload);
+        utils.saveCartToLocalStorage(state.cart);
+        toast.success(
+          `'${action.payload?.product?.title || "Product"}' added to cart`
+        );
       }
+    },
 
-      utils.saveCartToLocalStorage(state.cartItems);
+    removeProductFromCart: (
+      state,
+      action: PayloadAction<{
+        productId: string;
+        selectedColor: string;
+        selectedSize: string;
+      }>
+    ) => {
+      const productIndex = state.cart.products.findIndex(
+        (item) =>
+          item.product._id === action.payload.productId &&
+          item.selectedColor === action.payload.selectedColor &&
+          item.selectedSize === action.payload.selectedSize
+      );
+
+      if (productIndex !== -1) {
+        state.cart.products.splice(productIndex, 1);
+        toast.success(
+          `'${
+            state.cart.products[productIndex]?.product?.title || "Product"
+          }' removed from cart`
+        );
+        utils.saveCartToLocalStorage(state.cart);
+      }
     },
 
     updateCartProduct: (
@@ -49,7 +79,7 @@ const cartSlice = createSlice({
         selectedSize: string;
       }>
     ) => {
-      const productIndex = state.cartItems.findIndex(
+      const productIndex = state.cart.products.findIndex(
         (item) =>
           item.product._id === action.payload.productId &&
           item.selectedColor === action.payload.selectedColor &&
@@ -58,23 +88,33 @@ const cartSlice = createSlice({
 
       if (productIndex !== -1) {
         if (action.payload.type === "inc") {
-          state.cartItems[productIndex].quantity += 1;
+          state.cart.products[productIndex].quantity += 1;
         } else if (
           action.payload.type === "dec" &&
-          state.cartItems[productIndex].quantity > 1
+          state.cart.products[productIndex].quantity > 1
         ) {
-          state.cartItems[productIndex].quantity -= 1;
+          state.cart.products[productIndex].quantity -= 1;
         }
+        utils.saveCartToLocalStorage(state.cart);
       }
+    },
 
-      utils.saveCartToLocalStorage(state.cartItems);
+    clearCart: (state) => {
+      state.cart = { ...state.cart, products: [] };
+      toast.success("Cart cleared");
+      utils.saveCartToLocalStorage(state.cart);
     },
   },
 });
 
 // Export actions
-export const { toggleShowCart, addProductToCart, updateCartProduct } =
-  cartSlice.actions;
+export const {
+  toggleShowCart,
+  addProductToCart,
+  removeProductFromCart,
+  updateCartProduct,
+  clearCart,
+} = cartSlice.actions;
 
 // Export reducer
 export default cartSlice.reducer;

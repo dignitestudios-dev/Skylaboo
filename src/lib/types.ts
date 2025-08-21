@@ -5,7 +5,6 @@ export interface Product {
   description: string;
   colors: string[];
   sizes: string[];
-  stock: number;
   price: number;
   images: {
     link: string;
@@ -18,22 +17,41 @@ export interface Product {
 }
 
 interface DeliveryDetails {
-  countryOrRegion: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  apartment: string;
-  city: string;
-  postalCode: string;
-  phone: string;
+    country: string;
+    city: string;
+    address: string;
+    apartment: string;
+    postalCode: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+}
+
+export interface CartProduct {
+  product: Product;
+  quantity: number;
+  selectedColor: string;
+  selectedSize: string;
 }
 
 export interface Cart {
-  quantity: number;
-  price: number;
-  selectedColor: string;
-  selectedSize: string;
-  product: Product;
-  isDelivery: boolean;
-  delivery: DeliveryDetails;
+  products: CartProduct[];
+  contact: {
+    email: string;
+  };
+  orderType: "delivery" | "pickup";
+  delivery: DeliveryDetails
+  shippingCost: number;
+}
+
+export interface Pagination {
+  currentPage: number;
+  itemsPerPage: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface Category {
+  _id: string;
+  name: string;
 }

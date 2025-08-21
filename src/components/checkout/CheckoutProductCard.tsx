@@ -1,14 +1,14 @@
-import { Cart } from "@/lib/types";
+import { Cart, CartProduct } from "@/lib/types";
 import React from "react";
 
 interface CheckoutProductCardProps {
-  cartItem: Cart;
+  cartProduct: CartProduct;
 }
 
 const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
-  cartItem,
+  cartProduct,
 }) => {
-  const product = cartItem.product;
+  const product = cartProduct.product;
 
   return (
     <div className="flex justify-between gap-10">
@@ -22,7 +22,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
           >
             <div className="absolute -top-3 -right-3 h-6 w-6 rounded-full bg-[var(--color-purple)] flex justify-center items-center">
               <p className="text-white font-bold text-sm">
-                {cartItem.quantity}
+                {cartProduct.quantity}
               </p>
             </div>
           </div>
@@ -30,11 +30,11 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
 
         <div className="h-full">
           <p className="text-sm mb-6">{product.title}</p>
-          <p className="text-sm text-gray-500">{cartItem.selectedSize}</p>
+          <p className="text-sm text-gray-500">{cartProduct.selectedSize}</p>
         </div>
       </div>
       <div>
-        <p className="font-bold">${product.price * cartItem.quantity}</p>
+        <p className="font-bold">${product.price * cartProduct.quantity}</p>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const cart = useAppSelector((state) => state.cart.cart);
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState<string>("");
 
@@ -79,7 +79,7 @@ const Navbar = () => {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 w-full flex lg:justify-center justify-end items-center px-12">
+    <header className="sticky top-0 z-40 w-full flex lg:justify-center justify-end items-center px-12">
       {/* Large Screen navbar */}
       <nav className="w-full rounded-full mt-10 backdrop-blur-lg lg:flex hidden items-center">
         <div className="relative h-[75px] flex-1 flex items-center">
@@ -143,7 +143,7 @@ const Navbar = () => {
             onClick={handleShowCart}
           >
             <CartIcon />{" "}
-            <span className="text-white text-xs">{cartItems.length}</span>
+            <span className="text-white text-xs">{cart?.products?.length}</span>
           </button>
         </div>
       </nav>
@@ -164,7 +164,7 @@ const Navbar = () => {
             onClick={handleShowCart}
           >
             <CartIcon />{" "}
-            <span className="text-white text-xs">{cartItems.length}</span>
+            <span className="text-white text-xs">{cart?.products?.length}</span>
           </button>
 
           <div>

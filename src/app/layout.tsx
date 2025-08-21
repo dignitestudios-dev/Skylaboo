@@ -5,6 +5,7 @@ import Footer from "@/components/global/Footer";
 import StoreProvider from "@/components/providers/StoreProvider";
 import CartSlider from "@/components/cart/CartSlider";
 import ToastProvider from "@/components/providers/ToastProvider";
+import { ScrollToTop } from "@/components/global/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "Skylaboo",
@@ -23,6 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`antialiased flex justify-center overflow-x-hidden`}>
+        {/* Prevent by default behavior of not scroll to top on page change */}
+        {/* <ScrollToTop /> */}
         {/* Redux store provider start */}
         <StoreProvider>
           <ToastProvider />
@@ -32,17 +35,11 @@ export default function RootLayout({
               <div className="min-[1150px]:-mt-[440px] -mt-[200px] w-[70%] min-[1150px]:h-[605px] h-[300px] bg-[var(--color-yellow)]/20 rounded-full blur-3xl" />
             </div>
 
-            {/* Common navigation bar */}
-            <Navbar />
-
             {/* Cart Slider */}
             <CartSlider />
 
             {/* Pages */}
             {children}
-
-            {/* Common footer */}
-            <Footer />
           </main>
         </StoreProvider>
         {/* Redux store provider end */}

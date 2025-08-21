@@ -1,18 +1,19 @@
+import { defaultCart } from "./constants";
 import { Cart } from "./types";
 
 const isBrowser = typeof window !== "undefined";
 
-const loadCartFromLocalStorage = (): Cart[] => {
+const loadCartFromLocalStorage = (): Cart => {
   if (isBrowser) {
-    const cart = localStorage.getItem("cartItems");
-    return cart ? JSON.parse(cart) : [];
+    const cart = localStorage.getItem("cart");
+    return cart ? JSON.parse(cart) : defaultCart;
   }
-  return [];
+  return defaultCart;
 };
 
-const saveCartToLocalStorage = (cartItems: Cart[]) => {
+const saveCartToLocalStorage = (cart: Cart) => {
   if (isBrowser) {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 };
 
