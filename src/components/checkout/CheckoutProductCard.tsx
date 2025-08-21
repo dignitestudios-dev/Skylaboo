@@ -34,7 +34,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
         </div>
       </div>
       <div>
-        <p className="font-bold">${product.price * cartProduct.quantity}</p>
+        <p className="font-bold">${(product.price * cartProduct.quantity).toFixed(2)}</p>
       </div>
     </div>
   );

@@ -226,7 +226,7 @@ const ConfirmOrder = () => {
 
                 <div className="w-full flex justify-between">
                   <p>Subtotal - {cart?.products?.length} items</p>
-                  <p>${subtotal}</p>
+                  <p>${subtotal.toFixed(2)}</p>
                 </div>
 
                 <div className="w-full flex justify-between">
@@ -236,7 +236,7 @@ const ConfirmOrder = () => {
 
                 <div className="sm:text-xl font-bold w-full flex justify-between">
                   <p>Total</p>
-                  <p>${subtotal + shipping}</p>
+                  <p>${(subtotal + shipping).toFixed(2)}</p>
                 </div>
 
                 <div className="w-full h-0.5 bg-multi-gradient rounded-full" />

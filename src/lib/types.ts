@@ -14,17 +14,18 @@ export interface Product {
   isFeatured: string;
   isActive: string;
   isDeleted: string;
+  receivingOptions: ("delivery" | "pickup")[];
 }
 
 interface DeliveryDetails {
-    country: string;
-    city: string;
-    address: string;
-    apartment: string;
-    postalCode: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
+  country: string;
+  city: string;
+  address: string;
+  apartment: string;
+  postalCode: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
 }
 
 export interface CartProduct {
@@ -40,7 +41,7 @@ export interface Cart {
     email: string;
   };
   orderType: "delivery" | "pickup";
-  delivery: DeliveryDetails
+  delivery: DeliveryDetails;
   shippingCost: number;
 }
 

@@ -58,14 +58,17 @@ const apiHandler = async <T>(apiCall: () => Promise<T>): Promise<T> => {
 const getAllProducts = (
   page: number = defaultPage,
   limit: number = defaultLimit,
-  categoryId: string
+  categoryId: string,
+  searchTerm: string
 ) =>
   apiHandler<{
     data: Product[];
     message: string;
     pagination: Pagination;
   }>(() =>
-    API.get(`/product?page=${page}&limit=${limit}&categoryId=${categoryId}`)
+    API.get(
+      `/product?page=${page}&limit=${limit}&categoryId=${categoryId}&search=${searchTerm}`
+    )
   );
 
 const getProductById = (id: string) =>

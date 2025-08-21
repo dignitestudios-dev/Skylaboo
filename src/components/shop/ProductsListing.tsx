@@ -10,15 +10,17 @@ import { categoryHooks } from "@/hooks/categories/CategoriesHooks";
 
 const tabs = ["All", "Tops", "Bottoms", "Shoes", "Accessories", "Toys"];
 
-const ProductsListingWithSuspense = () => {
+const ProductsListingWithSuspense: React.FC<{ searchTerm: string }> = ({
+  searchTerm,
+}) => {
   return (
     <Suspense fallback="">
-      <ProductsListing />
+      <ProductsListing searchTerm={searchTerm} />
     </Suspense>
   );
 };
 
-const ProductsListing = () => {
+const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -30,7 +32,8 @@ const ProductsListing = () => {
   const { loading, products } = productHooks.useGetAllProducts(
     1,
     10,
-    selectedCategoryId || ""
+    selectedCategoryId || "",
+    searchTerm
   );
 
   const { loading: loadingCategories, categories } =

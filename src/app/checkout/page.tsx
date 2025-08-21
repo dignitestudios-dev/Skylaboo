@@ -3,14 +3,15 @@ import Accordion from "@/components/common/Accordion";
 import React, { useMemo, useState } from "react";
 import { InfoIcon } from "lucide-react";
 import CheckoutProductCard from "@/components/checkout/CheckoutProductCard";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import Modal from "@/components/common/Modal";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
+import { setOrderType } from "@/lib/features/cartSlice";
 
 const Checkout = () => {
-  const [isDelivery, setIsDelivery] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart);
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
@@ -35,7 +36,10 @@ const Checkout = () => {
     );
   }, [cart]);
 
-  //   my project is an ecommerece platform. Users selects products and then enter delivery address and the stripe elements is showing the input to enter card, these are done. Now there is a Review Order button then the user redirect to the Review Order page showing the card details order details and delivery details then user clicks on Checkout then payment deduct. Now tell me how this will happen
+  // Handle order type changes
+  const handleOrderTypeChange = (orderType: "delivery" | "pickup") => {
+    dispatch(setOrderType(orderType));
+  };
 
   return (
     <>
@@ -58,8 +62,6 @@ const Checkout = () => {
                       className="outline-none border-none w-full"
                       name="name"
                       id="name"
-                      // value={formData.name}
-                      // onChange={handleInputChange}
                       placeholder="Email"
                     />
                   </div>
@@ -94,15 +96,13 @@ const Checkout = () => {
               </div>
 
               <div className="input-border">
-                <div
-                  className="!p-0"
-                  onClick={() => setIsDelivery((prev) => !prev)}
-                >
+                <div className="!p-0">
                   <Accordion
                     titleNode={<p className="sm:text-xl font-bold">Delivery</p>}
                     type="arrow"
                     h="1000"
-                    active={isDelivery}
+                    active={cart.orderType === "delivery"}
+                    onClick={() => handleOrderTypeChange("delivery")}
                   >
                     <form className="grid grid-cols-2 gap-5 sm:p-3 p-0">
                       <div className="input-border col-span-full">
@@ -110,10 +110,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="country"
+                            id="country"
                             placeholder="Country/Region"
                           />
                         </div>
@@ -124,10 +122,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="firstName"
+                            id="firstName"
                             placeholder="First name"
                           />
                         </div>
@@ -138,10 +134,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="lastName"
+                            id="lastName"
                             placeholder="Last name"
                           />
                         </div>
@@ -152,10 +146,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="address"
+                            id="address"
                             placeholder="Address"
                           />
                         </div>
@@ -166,10 +158,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="apartment"
+                            id="apartment"
                             placeholder="Apartment, suite, etc. (optional)"
                           />
                         </div>
@@ -180,10 +170,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="city"
+                            id="city"
                             placeholder="City"
                           />
                         </div>
@@ -194,10 +182,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="postalCode"
+                            id="postalCode"
                             placeholder="Postal code (optional)"
                           />
                         </div>
@@ -208,10 +194,8 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="outline-none border-none w-full"
-                            name="name"
-                            id="name"
-                            // value={formData.name}
-                            // onChange={handleInputChange}
+                            name="phone"
+                            id="phone"
                             placeholder="Phone"
                           />
                         </div>
@@ -222,15 +206,13 @@ const Checkout = () => {
               </div>
 
               <div className="input-border">
-                <div
-                  className="!p-0"
-                  onClick={() => setIsDelivery((prev) => !prev)}
-                >
+                <div className="!p-0">
                   <Accordion
                     titleNode={<p className="sm:text-xl font-bold">Pickup</p>}
                     type="arrow"
                     h="1000"
-                    active={!isDelivery}
+                    active={cart.orderType === "pickup"}
+                    onClick={() => handleOrderTypeChange("pickup")}
                   >
                     <div className="input-border mx-3 mb-3">
                       <div>
@@ -260,7 +242,7 @@ const Checkout = () => {
 
               <p className="mt-6 text-[#707070]">
                 Your info will be saved to a Shop account. By continuing, you
-                agree to Shop’s
+                agree to Shop's
                 <button
                   className="underline cursor-pointer"
                   onClick={() => setToggleTermsModal("show")}
@@ -300,17 +282,22 @@ const Checkout = () => {
 
                 <div className="w-full flex justify-between">
                   <p>Subtotal - {cart?.products?.length} items</p>
-                  <p>${subtotal}</p>
+                  <p>${subtotal.toFixed(2)}</p>
                 </div>
 
                 <div className="w-full flex justify-between">
                   <p>Shipping</p>
-                  <p>${shipping}</p>
+                  <p>${cart.orderType === "pickup" ? "0" : shipping}</p>
                 </div>
 
                 <div className="sm:text-xl font-bold w-full flex justify-between">
                   <p>Total</p>
-                  <p>${subtotal + shipping}</p>
+                  <p>
+                    $
+                    {cart.orderType === "pickup"
+                      ? subtotal.toFixed(2)
+                      : (subtotal + shipping).toFixed(2)}
+                  </p>
                 </div>
 
                 <div className="w-full h-0.5 bg-multi-gradient rounded-full" />

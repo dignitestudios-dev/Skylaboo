@@ -3,7 +3,12 @@ import { api } from "@/lib/services";
 import { Product } from "@/lib/types";
 import { useEffect, useState } from "react";
 
-const useGetAllProducts = (page: number, limit: number, categoryId: string) => {
+const useGetAllProducts = (
+  page: number,
+  limit: number,
+  categoryId: string,
+  searchTerm: string
+) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
@@ -11,7 +16,12 @@ const useGetAllProducts = (page: number, limit: number, categoryId: string) => {
   const getAllProducts = async () => {
     setLoading(true);
     try {
-      const resposne = await api.getAllProducts(page, limit, categoryId);
+      const resposne = await api.getAllProducts(
+        page,
+        limit,
+        categoryId,
+        searchTerm
+      );
       setProducts(resposne.data);
       setTotalPages(resposne.pagination.totalPages);
     } catch (error: any) {
@@ -23,7 +33,7 @@ const useGetAllProducts = (page: number, limit: number, categoryId: string) => {
 
   useEffect(() => {
     getAllProducts();
-  }, [page, limit, categoryId]);
+  }, [page, limit, categoryId, searchTerm]);
 
   return {
     loading,

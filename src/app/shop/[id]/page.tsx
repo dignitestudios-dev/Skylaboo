@@ -8,7 +8,8 @@ import Check from "@/components/icons/Check";
 import { productHooks } from "@/hooks/products/ProductHooks";
 import { addProductToCart } from "@/lib/features/cartSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { Cart, Product } from "@/lib/types";
+import { Cart, CartProduct, Product } from "@/lib/types";
+import { utils } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -70,7 +71,7 @@ const ProductDetails = () => {
   };
 
   const handleAddProductToCart = (product: Product) => {
-    const cartProduct: Cart = {
+    const cartProduct: CartProduct = {
       product: product,
       quantity: selectedDetails?.quantity || 1,
       selectedColor: selectedDetails?.color || product.colors[0],
@@ -237,19 +238,17 @@ const ProductDetails = () => {
                         </p>
 
                         <div className="flex items-center gap-4">
-                          <button
-                            className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
-                          >
-                            <Check />
-                            Delivery
-                          </button>
-
-                          <button
-                            className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
-                          >
-                            <Check />
-                            Pickup
-                          </button>
+                          {product?.receivingOptions?.map(
+                            (receivingOption, index) => (
+                              <button
+                                key={index}
+                                className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
+                              >
+                                <Check />
+                                {utils.toTitleCase(receivingOption)}
+                              </button>
+                            )
+                          )}
                         </div>
                       </div>
                       <Accordion

@@ -16,11 +16,16 @@ const initialState: InitialState = {
 
 // Create the cart slice
 const cartSlice = createSlice({
-  name: "cart", // Changed from "user" to "cart" for better naming
+  name: "cart",
   initialState,
   reducers: {
     toggleShowCart: (state, action: PayloadAction<boolean>) => {
       state.showCart = action.payload;
+    },
+
+    setOrderType: (state, action: PayloadAction<"delivery" | "pickup">) => {
+      state.cart.orderType = action.payload;
+      utils.saveCartToLocalStorage(state.cart);
     },
 
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
@@ -110,6 +115,7 @@ const cartSlice = createSlice({
 // Export actions
 export const {
   toggleShowCart,
+  setOrderType,
   addProductToCart,
   removeProductFromCart,
   updateCartProduct,

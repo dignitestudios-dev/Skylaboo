@@ -17,7 +17,16 @@ const saveCartToLocalStorage = (cart: Cart) => {
   }
 };
 
+const toTitleCase = (str: string): string => {
+  return str
+    ?.toLowerCase()
+    ?.split(/\s|-/) // Split on spaces or hyphens
+    ?.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    ?.join(" ");
+};
+
 export const utils = {
   loadCartFromLocalStorage,
   saveCartToLocalStorage,
+  toTitleCase,
 };
