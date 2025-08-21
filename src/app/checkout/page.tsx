@@ -8,9 +8,16 @@ import Link from "next/link";
 import Modal from "@/components/common/Modal";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
-import { setOrderType } from "@/lib/features/cartSlice";
+import {
+  setOrderType,
+  updateContactEmail,
+  updateDeliveryDetails,
+} from "@/lib/features/cartSlice";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -20,6 +27,13 @@ const Checkout = () => {
   const [togglePrivacyModal, setTogglePrivacyModal] = useState<"hide" | "show">(
     "hide"
   );
+  const [emailNewsOffers, setEmailNewsOffers] = useState(true);
+  const [deliveryFormData, setDeliveryFormData] = useState({
+    contact: {
+      email: cart.contact.email,
+    },
+    delivery: cart.delivery,
+  });
 
   const shipping = 50;
   const subtotal = useMemo(() => {
@@ -41,6 +55,50 @@ const Checkout = () => {
     dispatch(setOrderType(orderType));
   };
 
+  // Handle email input change
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDeliveryFormData((prev) => ({
+      ...prev,
+      contact: {
+        email: e.target.value,
+      },
+    }));
+    dispatch(updateContactEmail(e.target.value));
+  };
+
+  // Handle delivery form input changes
+  const handleDeliveryInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setDeliveryFormData((prev) => ({
+      ...prev,
+      delivery: {
+        ...prev.delivery,
+        [name]: e.target.value,
+      },
+    }));
+    dispatch(updateDeliveryDetails({ [name]: value }));
+  };
+
+  const handleReviewOrder = () => {
+    if (!cart.contact.email) {
+      toast.error("Please provide contact email");
+      return;
+    }
+
+    const { address, city, country, firstName, lastName, phoneNumber } =
+      cart.delivery;
+
+    if (cart.orderType === "delivery") {
+      if (!address || !city || !country || !firstName || !lastName || !phoneNumber) {
+        toast.error("Delivery details are required");
+        return;
+      }
+    }
+    router.push("/confirm-order");
+  };
+
   return (
     <>
       {/* Common navigation bar */}
@@ -58,10 +116,12 @@ const Checkout = () => {
                 <div className="input-border p-0.5 rounded-full w-full h-[48px]">
                   <div className="rounded-full w-full h-full flex items-center gap-2 px-3">
                     <input
-                      type="text"
+                      type="email"
                       className="outline-none border-none w-full"
-                      name="name"
-                      id="name"
+                      name="email"
+                      id="email"
+                      value={deliveryFormData.contact.email}
+                      onChange={handleEmailChange}
                       placeholder="Email"
                     />
                   </div>
@@ -73,6 +133,8 @@ const Checkout = () => {
                       type="checkbox"
                       className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded border border-gray-400 checked:border-none checked:bg-[var(--color-purple)]"
                       id="check"
+                      checked={emailNewsOffers}
+                      onChange={(e) => setEmailNewsOffers(e.target.checked)}
                     />
                     <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                       <svg
@@ -112,6 +174,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="country"
                             id="country"
+                            value={deliveryFormData.delivery.country}
+                            onChange={handleDeliveryInputChange}
                             placeholder="Country/Region"
                           />
                         </div>
@@ -124,6 +188,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="firstName"
                             id="firstName"
+                            value={deliveryFormData.delivery.firstName}
+                            onChange={handleDeliveryInputChange}
                             placeholder="First name"
                           />
                         </div>
@@ -136,6 +202,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="lastName"
                             id="lastName"
+                            value={deliveryFormData.delivery.lastName}
+                            onChange={handleDeliveryInputChange}
                             placeholder="Last name"
                           />
                         </div>
@@ -148,6 +216,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="address"
                             id="address"
+                            value={deliveryFormData.delivery.address}
+                            onChange={handleDeliveryInputChange}
                             placeholder="Address"
                           />
                         </div>
@@ -160,6 +230,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="apartment"
                             id="apartment"
+                            value={deliveryFormData.delivery.apartment}
+                            onChange={handleDeliveryInputChange}
                             placeholder="Apartment, suite, etc. (optional)"
                           />
                         </div>
@@ -172,6 +244,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="city"
                             id="city"
+                            value={deliveryFormData.delivery.city}
+                            onChange={handleDeliveryInputChange}
                             placeholder="City"
                           />
                         </div>
@@ -184,6 +258,8 @@ const Checkout = () => {
                             className="outline-none border-none w-full"
                             name="postalCode"
                             id="postalCode"
+                            value={deliveryFormData.delivery.postalCode}
+                            onChange={handleDeliveryInputChange}
                             placeholder="Postal code (optional)"
                           />
                         </div>
@@ -192,10 +268,12 @@ const Checkout = () => {
                       <div className="input-border col-span-full">
                         <div className="rounded-full w-full h-full flex items-center gap-2 px-3">
                           <input
-                            type="text"
+                            type="tel"
                             className="outline-none border-none w-full"
-                            name="phone"
-                            id="phone"
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            value={deliveryFormData.delivery.phoneNumber}
+                            onChange={handleDeliveryInputChange}
                             placeholder="Phone"
                           />
                         </div>
@@ -234,11 +312,12 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <Link href={"/confirm-order"} className="w-full">
-                <button className="w-full cursor-pointer flex justify-center items-center py-3 text-white bg-[var(--color-purple)] rounded-3xl rounded-tl-2xl">
-                  Review Order
-                </button>
-              </Link>
+              <button
+                className="w-full cursor-pointer flex justify-center items-center py-3 text-white bg-[var(--color-purple)] rounded-3xl rounded-tl-2xl"
+                onClick={handleReviewOrder}
+              >
+                Review Order
+              </button>
 
               <p className="mt-6 text-[#707070]">
                 Your info will be saved to a Shop account. By continuing, you
@@ -287,7 +366,10 @@ const Checkout = () => {
 
                 <div className="w-full flex justify-between">
                   <p>Shipping</p>
-                  <p>${cart.orderType === "pickup" ? "0" : shipping}</p>
+                  <p>
+                    $
+                    {cart.orderType === "pickup" ? "0.00" : shipping.toFixed(2)}
+                  </p>
                 </div>
 
                 <div className="sm:text-xl font-bold w-full flex justify-between">

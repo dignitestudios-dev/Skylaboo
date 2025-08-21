@@ -28,6 +28,33 @@ const cartSlice = createSlice({
       utils.saveCartToLocalStorage(state.cart);
     },
 
+    updateContactEmail: (state, action: PayloadAction<string>) => {
+      state.cart.contact.email = action.payload;
+      utils.saveCartToLocalStorage(state.cart);
+    },
+
+    updateDeliveryDetails: (
+      state,
+      action: PayloadAction<
+        Partial<{
+          country: string;
+          city: string;
+          address: string;
+          apartment: string;
+          postalCode: string;
+          firstName: string;
+          lastName: string;
+          phoneNumber: string;
+        }>
+      >
+    ) => {
+      state.cart.delivery = {
+        ...state.cart.delivery,
+        ...action.payload,
+      };
+      utils.saveCartToLocalStorage(state.cart);
+    },
+
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
       const existingProductIndex = state.cart.products.findIndex(
         (item) =>
@@ -116,6 +143,8 @@ const cartSlice = createSlice({
 export const {
   toggleShowCart,
   setOrderType,
+  updateContactEmail,
+  updateDeliveryDetails,
   addProductToCart,
   removeProductFromCart,
   updateCartProduct,

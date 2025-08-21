@@ -14,7 +14,7 @@ export const defaultCart: Cart = {
       postalCode: "",
       firstName: "",
       lastName: "",
-      phone: "",
+      phoneNumber: "",
     },
     shippingCost: 0,
   };

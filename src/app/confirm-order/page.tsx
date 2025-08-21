@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import Modal from "@/components/common/Modal";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
+import { utils } from "@/lib/utils";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -65,7 +66,7 @@ const ConfirmOrder = () => {
 
               <div className="space-y-3">
                 <p className="font-black">Review Order</p>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <p className="text-[#707070] text-sm">
                     Order ID:{" "}
                     <span className="font-bold text-black">26413</span>
@@ -76,10 +77,12 @@ const ConfirmOrder = () => {
                   >
                     <Copy />
                   </button>
-                </div>
+                </div> */}
                 <p className="text-[#707070] text-sm">
                   Order Date:{" "}
-                  <span className="font-bold text-black">21 July, 2025</span>
+                  <span className="font-bold text-black">
+                    {utils.formatDateWithMonthName(String(new Date()))}
+                  </span>
                 </p>
               </div>
 
@@ -91,7 +94,7 @@ const ConfirmOrder = () => {
                 <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3">
                   <div>
                     <p className="text-xs text-[#707070]">Email</p>
-                    <p>john.doe@mail.com</p>
+                    <p>{cart?.contact?.email}</p>
                   </div>
 
                   <div className="inline-flex items-center mt-3">
@@ -126,43 +129,62 @@ const ConfirmOrder = () => {
                 </div>
               </div>
 
-              <div className="rounded-t-xl overflow-hidden">
-                <div className="bg-white p-2">
-                  <p className="sm:text-xl font-black sm:mb-2">Delivery</p>
+              {cart?.orderType === "delivery" ? (
+                <div className="rounded-t-xl overflow-hidden">
+                  <div className="bg-white p-2">
+                    <p className="sm:text-xl font-black sm:mb-2">Delivery</p>
+                  </div>
+
+                  <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3 sm:space-y-6 space-y-3">
+                    <div>
+                      <p className="text-xs text-[#707070]">Address</p>
+                      <p>{cart?.delivery?.address}</p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-[#707070]">Apartment</p>
+                      <p>{cart?.delivery?.apartment || "N/A"}</p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-[#707070]">City</p>
+                      <p>{cart?.delivery?.city}</p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-[#707070]">Postal Code</p>
+                      <p>{cart?.delivery?.postalCode || "N/A"}</p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-[#707070]">Name</p>
+                      <p>
+                        {cart?.delivery?.firstName} {cart?.delivery?.lastName}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-[#707070]">Phone Number</p>
+                      <p>{cart?.delivery?.phoneNumber}</p>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3 sm:space-y-6 space-y-3">
-                  <div>
-                    <p className="text-xs text-[#707070]">Address</p>
-                    <p>742 Evergreen Terrace</p>
+              ) : cart?.orderType === "pickup" ? (
+                <div className="rounded-t-xl overflow-hidden">
+                  <div className="bg-white p-2">
+                    <p className="sm:text-xl font-black sm:mb-2">Pickup</p>
                   </div>
 
-                  <div>
-                    <p className="text-xs text-[#707070]">Apartment</p>
-                    <p>Apt 5B</p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs text-[#707070]">City</p>
-                    <p>Springfield, California</p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs text-[#707070]">Postal Code</p>
-                    <p>62704</p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs text-[#707070]">Name</p>
-                    <p>John Doe</p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs text-[#707070]">Phone Number</p>
-                    <p>+1 (217) 555-0198</p>
+                  <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3 sm:space-y-6 space-y-3">
+                    <div>
+                      <p className="text-xs text-[#707070]">Address</p>
+                      <p>742 Evergreen Terrace</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                ""
+              )}
 
               <div className="input-border rounded-lg">
                 <div className="!py-2 !px-5">

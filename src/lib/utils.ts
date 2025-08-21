@@ -25,8 +25,24 @@ const toTitleCase = (str: string): string => {
     ?.join(" ");
 };
 
+// Convert ISO date to local date in (Mar 19, 2025) format
+const formatDateWithMonthName = (isoString: string | Date): string => {
+  const date = new Date(isoString);
+
+  if (isNaN(date.getTime())) {
+    return "Invalid date";
+  }
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
+};
+
 export const utils = {
   loadCartFromLocalStorage,
   saveCartToLocalStorage,
   toTitleCase,
+  formatDateWithMonthName,
 };

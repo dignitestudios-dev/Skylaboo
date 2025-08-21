@@ -25,7 +25,7 @@ interface DeliveryDetails {
   postalCode: string;
   firstName: string;
   lastName: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 export interface CartProduct {

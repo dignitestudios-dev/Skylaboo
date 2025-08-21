@@ -59,7 +59,7 @@ const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
           <p className="text-gray-400">No Product</p>
         </div>
       ) : (
-        <div className="relative z-20">
+        <div className="relative z-10">
           <Tabs
             isShopPage
             tabs={categories}
