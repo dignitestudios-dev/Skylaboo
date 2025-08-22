@@ -1,7 +1,7 @@
 "use client";
 import { addProductToCart } from "@/lib/features/cartSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { Cart, Product } from "@/lib/types";
+import { Cart, CartProduct, Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
@@ -12,7 +12,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const handleAddProductToCart = (product: Product) => {
-    const cartProduct: Cart = {
+    const cartProduct: CartProduct = {
       product: product,
       quantity: 1,
       selectedColor: product.colors[0] || "",

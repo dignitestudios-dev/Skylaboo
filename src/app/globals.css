@@ -341,3 +341,16 @@ html {
 }
 
 /* Main page loader styles end */
+
+/* Product card skeleton shimmer styles start*/
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Product card skeleton shimmer styles ends */

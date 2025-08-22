@@ -7,6 +7,9 @@ import { productHooks } from "@/hooks/products/ProductHooks";
 import PageLoader from "../common/PageLoader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { categoryHooks } from "@/hooks/categories/CategoriesHooks";
+import ProductCardSkeleton, {
+  ProductGridSkeleton,
+} from "../common/ProductCardSkeleton";
 
 const ProductsListingWithSuspense: React.FC<{ searchTerm: string }> = ({
   searchTerm,
@@ -30,7 +33,7 @@ const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
 
   const { loading, products, totalPages } = productHooks.useGetAllProducts(
     currentPage,
-    1,
+    10,
     selectedCategoryId || "",
     searchTerm
   );
@@ -109,13 +112,15 @@ const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
           />
         )}
         {loading ? (
-          <PageLoader />
+          <div className="my-6">
+            <ProductGridSkeleton count={5} />
+          </div>
         ) : !products || !products.length ? (
           <div className="w-full flex justify-center py-6">
             <p className="text-gray-400">No Product</p>
           </div>
         ) : (
-          <div className="mt-6 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[425px]:grid-cols-2 gap-x-3 gap-y-8">
+          <div className="my-6 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[425px]:grid-cols-2 gap-x-3 gap-y-8">
             {products.map((product, index) => (
               <ProductCard key={index} product={product} />
             ))}
@@ -123,12 +128,12 @@ const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
         )}
 
         {/* Pagination - Only show if there are products and more than 1 page */}
-        {!loading && products && products.length > 0 && totalPages > 1 && (
-          <div className="w-full flex justify-center items-center gap-3 my-10">
+        {products && products.length > 0 && totalPages > 1 && (
+          <div className="w-full flex justify-center items-center gap-3 mb-10">
             {/* Previous Button */}
             <button
               onClick={() => canGoPrevious && handlePageChange(currentPage - 1)}
-              disabled={!canGoPrevious}
+              disabled={!canGoPrevious || loading}
               className={`p-1 ${
                 canGoPrevious
                   ? "cursor-pointer hover:bg-gray-100 rounded"
@@ -158,7 +163,7 @@ const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
             {/* Next Button */}
             <button
               onClick={() => canGoNext && handlePageChange(currentPage + 1)}
-              disabled={!canGoNext}
+              disabled={!canGoNext || loading}
               className={`p-1 ${
                 canGoNext
                   ? "cursor-pointer hover:bg-gray-100 rounded"
