@@ -1,13 +1,10 @@
 "use client";
-import Footer from "@/components/global/Footer";
-import Navbar from "@/components/global/Navbar";
 import ProductsListing from "@/components/shop/ProductsListing";
-import ShopHero from "@/components/shop/ShopHero";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import YellowGlow from "../../components/common/YellowGlow";
 import { Search } from "lucide-react";
-import useDebounceSearch from "@/hooks/useDebounceSearch";
+
+const isBrowser = typeof window !== "undefined";
 
 const Shop = () => {
   const [searchedInputValue, setSearchedInputValue] = useState<string>("");
@@ -22,6 +19,12 @@ const Shop = () => {
 
     if (!previousSearches.length) {
       setPreviousSearches(parsedSearch);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isBrowser) {
+      localStorage.removeItem("orderData");
     }
   }, []);
 
@@ -53,13 +56,11 @@ const Shop = () => {
       }
     }
 
-    setSearchedValue(searchedInputValue)
+    setSearchedValue(searchedInputValue);
   };
 
   return (
     <>
-      {/* Common navigation bar */}
-      <Navbar />
       <div>
         {/* ShopHero */}
         <div className="relative lg:mt-6 mt-16">
@@ -131,8 +132,6 @@ const Shop = () => {
         </div>
         <ProductsListing searchTerm={searchedValue} />
       </div>
-      {/* Common footer */}
-      <Footer />
     </>
   );
 };

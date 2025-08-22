@@ -29,7 +29,8 @@ const ShopNow = () => {
   const { loading, products } = productHooks.useGetAllProducts(
     1,
     10,
-    selectedCategoryId || ""
+    selectedCategoryId || "",
+    ""
   );
 
   const { loading: loadingCategories, categories } =

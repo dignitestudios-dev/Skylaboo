@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Category, Pagination, Product } from "./types";
+import { AppConfigs, Category, OrderData, Pagination, Product } from "./types";
 
 // Create an Axios instance
 const API = axios.create({
@@ -12,7 +12,6 @@ const API = axios.create({
 });
 
 // default page and limit
-
 const defaultPage = 1;
 const defaultLimit = 20;
 
@@ -55,6 +54,7 @@ const apiHandler = async <T>(apiCall: () => Promise<T>): Promise<T> => {
 
 // Centralized API Handling functions end
 
+// Products API
 const getAllProducts = (
   page: number = defaultPage,
   limit: number = defaultLimit,
@@ -74,6 +74,7 @@ const getAllProducts = (
 const getProductById = (id: string) =>
   apiHandler(() => API.get(`/product/${id}`));
 
+// Categories API
 const getAllCategories = (
   page: number = defaultPage,
   limit: number = defaultLimit
@@ -84,4 +85,48 @@ const getAllCategories = (
     pagination: Pagination;
   }>(() => API.get(`/category?page=${page}&limit=${limit}`));
 
-export const api = { getAllProducts, getProductById, getAllCategories };
+// App Configs API
+const getAppConfigs = () =>
+  apiHandler<{ data: AppConfigs; message: string }>(() =>
+    API.get("/global/config")
+  );
+
+// Order API
+const createOrder = (orderData: {
+  products: Array<{
+    product: string;
+    quantity: number;
+    selectedColor: string;
+    selectedSize: string;
+  }>;
+  contact: {
+    email: string;
+  };
+  delivery?: {
+    country?: string;
+    city?: string;
+    address?: string;
+    apartment?: string;
+    postalCode?: string;
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+  };
+  orderType: "delivery" | "pickup";
+  shippingCost: number;
+  pickupAddress?: string;
+  paymentMethodId: string;
+}) =>
+  apiHandler<{
+    data: OrderData;
+    message: string;
+    success: boolean;
+  }>(() => API.post("/order", orderData));
+
+export const api = {
+  getAllProducts,
+  getProductById,
+  getAllCategories,
+  getAppConfigs,
+  createOrder,
+};

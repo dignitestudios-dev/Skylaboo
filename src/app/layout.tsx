@@ -38,8 +38,14 @@ export default function RootLayout({
             {/* Cart Slider */}
             <CartSlider />
 
+            {/* Common Navbar */}
+            <Navbar />
+
             {/* Pages */}
             {children}
+
+            {/* Common Footer */}
+            <Footer />
           </main>
         </StoreProvider>
         {/* Redux store provider end */}

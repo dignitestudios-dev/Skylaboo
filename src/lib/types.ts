@@ -42,6 +42,7 @@ export interface Cart {
   };
   orderType: "delivery" | "pickup";
   delivery: DeliveryDetails;
+  pickupAddress: string;
   shippingCost: number;
 }
 
@@ -55,4 +56,27 @@ export interface Pagination {
 export interface Category {
   _id: string;
   name: string;
+}
+
+export interface AppConfigs {
+  shippingCost: number;
+  pickupAddress: string;
+}
+
+export interface OrderData {
+  createdAt: string;
+  contact: {
+    email: string;
+  };
+  delivery?: DeliveryDetails;
+  orderType: "delivery" | "pickup";
+  pickupAddress: string;
+  products: CartProduct[];
+  shortCode: string;
+  shippingCost: number;
+  totalAmount: number;
+  paymentStatus: string;
+  orderStatus: string;
+  clientSecret: string;
+  paymentIntentId: string;
 }

@@ -28,6 +28,15 @@ const cartSlice = createSlice({
       utils.saveCartToLocalStorage(state.cart);
     },
 
+    updateShippingCostAndPickupAddress: (
+      state,
+      action: PayloadAction<{ shippingCost: number; pickupAddress: string }>
+    ) => {
+      state.cart.shippingCost = action.payload.shippingCost;
+      state.cart.pickupAddress = action.payload.pickupAddress;
+      utils.saveCartToLocalStorage(state.cart);
+    },
+
     updateContactEmail: (state, action: PayloadAction<string>) => {
       state.cart.contact.email = action.payload;
       utils.saveCartToLocalStorage(state.cart);
@@ -133,7 +142,6 @@ const cartSlice = createSlice({
 
     clearCart: (state) => {
       state.cart = { ...state.cart, products: [] };
-      toast.success("Cart cleared");
       utils.saveCartToLocalStorage(state.cart);
     },
   },
@@ -143,6 +151,7 @@ const cartSlice = createSlice({
 export const {
   toggleShowCart,
   setOrderType,
+  updateShippingCostAndPickupAddress,
   updateContactEmail,
   updateDeliveryDetails,
   addProductToCart,

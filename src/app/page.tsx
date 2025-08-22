@@ -1,6 +1,5 @@
+"use client";
 import PageLoader from "@/components/common/PageLoader";
-import Footer from "@/components/global/Footer";
-import Navbar from "@/components/global/Navbar";
 import About from "@/components/home/About";
 import Categories from "@/components/home/Categories";
 import Contact from "@/components/home/Contact";
@@ -10,13 +9,19 @@ import ShopNow from "@/components/home/ShopNow";
 import WelcomeModal from "@/components/home/WelcomeModal";
 import { categoryHooks } from "@/hooks/categories/CategoriesHooks";
 import { productHooks } from "@/hooks/products/ProductHooks";
-import React from "react";
+import React, { useEffect } from "react";
+
+const isBrowser = typeof window !== "undefined";
 
 const Home = () => {
+  useEffect(() => {
+    if (isBrowser) {
+      localStorage.removeItem("orderData");
+    }
+  }, []);
+
   return (
     <>
-      {/* Common navigation bar */}
-      <Navbar />
 
       <div>
         <WelcomeModal />
@@ -29,9 +34,6 @@ const Home = () => {
         <About />
         <Contact />
       </div>
-
-      {/* Common footer */}
-      <Footer />
     </>
   );
 };

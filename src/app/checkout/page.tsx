@@ -1,13 +1,11 @@
 "use client";
 import Accordion from "@/components/common/Accordion";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { InfoIcon } from "lucide-react";
 import CheckoutProductCard from "@/components/checkout/CheckoutProductCard";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import Modal from "@/components/common/Modal";
-import Navbar from "@/components/global/Navbar";
-import Footer from "@/components/global/Footer";
 import {
   setOrderType,
   updateContactEmail,
@@ -15,11 +13,19 @@ import {
 } from "@/lib/features/cartSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { appConfigsHooks } from "@/hooks/appConfigs/AppConfigsHooks";
+import PageLoader from "@/components/common/PageLoader";
+
+const isBrowser = typeof window !== "undefined";
 
 const Checkout = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart);
+  const { loading } = appConfigsHooks.useGetAppConfigs();
+
+  const shipping = useMemo(() => cart?.shippingCost || 0, [cart.shippingCost]);
+  console.log("shipping: ",shipping)
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
     "hide"
@@ -35,7 +41,6 @@ const Checkout = () => {
     delivery: cart.delivery,
   });
 
-  const shipping = 50;
   const subtotal = useMemo(() => {
     const cartItemsWithTotalPrice = cart.products.map((cartProduct) => {
       return {
@@ -49,6 +54,14 @@ const Checkout = () => {
       0
     );
   }, [cart]);
+
+  useEffect(() => {
+    if (isBrowser) {
+      localStorage.removeItem("orderData");
+    }
+  }, []);
+
+  if (loading) return <PageLoader />;
 
   // Handle order type changes
   const handleOrderTypeChange = (orderType: "delivery" | "pickup") => {
@@ -82,6 +95,11 @@ const Checkout = () => {
   };
 
   const handleReviewOrder = () => {
+    if (!cart.products.length) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
     if (!cart.contact.email) {
       toast.error("Please provide contact email");
       return;
@@ -91,7 +109,14 @@ const Checkout = () => {
       cart.delivery;
 
     if (cart.orderType === "delivery") {
-      if (!address || !city || !country || !firstName || !lastName || !phoneNumber) {
+      if (
+        !address ||
+        !city ||
+        !country ||
+        !firstName ||
+        !lastName ||
+        !phoneNumber
+      ) {
         toast.error("Delivery details are required");
         return;
       }
@@ -101,13 +126,11 @@ const Checkout = () => {
 
   return (
     <>
-      {/* Common navigation bar */}
-      <Navbar />
       <div className="relative mt-20">
         {/* Yellow Glow */}
         <div className="absolute z-10 left-1/4 -top-12 w-[70%] h-[700px] bg-[#fad0bb]/60 rounded-full blur-[150px]" />
 
-        <div className="relative overflow-hidden sm:px-12 px-6 sm:pb-16 pb-8">
+        <div className="relative overflow-hidden sm:px-12 px-6 sm:pb-16 pb-8 py-12">
           <div className="relative z-20 w-full grid md:grid-cols-2 gap-10">
             <div className="space-y-5">
               <div>
@@ -302,10 +325,7 @@ const Checkout = () => {
                             Pickup Address
                           </p>
                         </div>
-                        <p>
-                          742 Evergreen Terrace, Apt 5B, Springfield,
-                          California, 62704
-                        </p>
+                        <p>{cart.pickupAddress}</p>
                       </div>
                     </div>
                   </Accordion>
@@ -498,8 +518,6 @@ const Checkout = () => {
           </p>
         </div>
       </Modal>
-      {/* Common footer */}
-      <Footer />
     </>
   );
 };

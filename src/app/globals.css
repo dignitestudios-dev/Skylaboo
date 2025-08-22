@@ -111,6 +111,15 @@ html {
   opacity: 0.3;
 }
 
+.bg-gradient-order-success {
+  background: linear-gradient(
+      94.74deg,
+      rgba(235, 197, 1, 0.5) -9.76%,
+      rgba(255, 130, 233, 0.5) 109.27%
+    ),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3));
+}
+
 .purple-btn {
   background: var(--color-purple-gradient);
   display: flex;

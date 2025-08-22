@@ -1,26 +1,36 @@
 "use client";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import Accordion from "@/components/common/Accordion";
-import React, { useMemo, useState } from "react";
-import PaymentForm from "@/components/checkout/PaymentForm";
+import React, { useEffect, useMemo, useState } from "react";
 import { InfoIcon, MoveLeft } from "lucide-react";
 import CheckoutProductCard from "@/components/checkout/CheckoutProductCard";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
-import Copy from "@/components/icons/Copy";
 import toast from "react-hot-toast";
 import Modal from "@/components/common/Modal";
-import Navbar from "@/components/global/Navbar";
-import Footer from "@/components/global/Footer";
 import { utils } from "@/lib/utils";
+import { appConfigsHooks } from "@/hooks/appConfigs/AppConfigsHooks";
+import PageLoader from "@/components/common/PageLoader";
+import { OrderData } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { clearCart } from "@/lib/features/cartSlice";
+import PaymentForm from "@/components/checkout/PaymentForm";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 
+const isBrowser = typeof window !== "undefined";
+
 const ConfirmOrder = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const { loading } = appConfigsHooks.useGetAppConfigs();
+
+  const shipping = useMemo(() => cart?.shippingCost || 0, [cart.shippingCost]);
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
     "hide"
@@ -29,7 +39,6 @@ const ConfirmOrder = () => {
     "hide"
   );
 
-  const shipping = 50;
   const subtotal = useMemo(() => {
     const cartItemsWithTotalPrice = cart?.products?.map((cartProduct) => {
       return {
@@ -44,15 +53,38 @@ const ConfirmOrder = () => {
     );
   }, [cart]);
 
-  const handleCopyOrderId = () => {
-    navigator.clipboard.writeText("26413"); // Replace "26413" with the dynamic order ID if needed
-    toast.success("Order ID copied!");
+  useEffect(() => {
+    if (isBrowser) {
+      localStorage.removeItem("orderData");
+    }
+  }, []);
+
+  if (loading) return <PageLoader />;
+
+  const handlePaymentSuccess = (orderData: OrderData) => {
+    toast.success("Payment successful! Order confirmed.");
+    setPaymentSuccess(true);
+    setOrderData(orderData);
+
+    if (isBrowser) {
+      localStorage.setItem("orderData", JSON.stringify(orderData));
+      dispatch(clearCart());
+      router.push("order-success");
+    }
+
+    // Here you might want to:
+    // 1. Clear the cart
+    // 2. Redirect to success page
+    // 3. Send confirmation email
+    // 4. Update order status in database
+  };
+
+  const handlePaymentError = (error: string) => {
+    toast.error(error);
   };
 
   return (
     <>
-      {/* Common navigation bar */}
-      <Navbar />{" "}
       <div className="relative mt-20 bg-[#fffdf9]">
         {/* Yellow Glow */}
         <div className="absolute z-10 left-1/4 -top-28 w-[70%] h-[700px] bg-[#fad0bb]/60 rounded-full blur-[150px]" />
@@ -66,18 +98,6 @@ const ConfirmOrder = () => {
 
               <div className="space-y-3">
                 <p className="font-black">Review Order</p>
-                {/* <div className="flex items-center gap-2">
-                  <p className="text-[#707070] text-sm">
-                    Order ID:{" "}
-                    <span className="font-bold text-black">26413</span>
-                  </p>
-                  <button
-                    onClick={handleCopyOrderId}
-                    className="cursor-pointer"
-                  >
-                    <Copy />
-                  </button>
-                </div> */}
                 <p className="text-[#707070] text-sm">
                   Order Date:{" "}
                   <span className="font-bold text-black">
@@ -103,7 +123,7 @@ const ConfirmOrder = () => {
                         type="checkbox"
                         className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded border border-gray-400 checked:border-none checked:bg-[var(--color-purple)]"
                         id="check"
-                        checked
+                        defaultChecked
                       />
                       <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                         <svg
@@ -178,7 +198,7 @@ const ConfirmOrder = () => {
                   <div className="bg-[var(--color-purple)]/10 w-full sm:p-6 p-3 sm:space-y-6 space-y-3">
                     <div>
                       <p className="text-xs text-[#707070]">Address</p>
-                      <p>742 Evergreen Terrace</p>
+                      <p>{cart.pickupAddress}</p>
                     </div>
                   </div>
                 </div>
@@ -188,7 +208,7 @@ const ConfirmOrder = () => {
 
               <div className="input-border rounded-lg">
                 <div className="!py-2 !px-5">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-4">
                     <div className="rounded-full h-5 w-5 bg-multi-gradient flex justify-center items-center">
                       <div className="bg-white rounded-full h-2 w-2" />
                     </div>
@@ -197,18 +217,19 @@ const ConfirmOrder = () => {
                     </p>
                   </div>
                   <Elements stripe={stripePromise}>
-                    <PaymentForm />
+                    <PaymentForm
+                      subtotal={subtotal}
+                      shipping={shipping}
+                      onPaymentSuccess={handlePaymentSuccess}
+                      onPaymentError={handlePaymentError}
+                    />
                   </Elements>
                 </div>
               </div>
 
-              <button className="w-full flex justify-center items-center py-3 text-white bg-[var(--color-purple)] rounded-3xl rounded-tl-2xl">
-                Confirm Order
-              </button>
-
               <p className="mt-6 text-[#707070]">
                 Your info will be saved to a Shop account. By continuing, you
-                agree to Shop’s
+                agree to Shop's{" "}
                 <button
                   className="underline cursor-pointer"
                   onClick={() => setToggleTermsModal("show")}
@@ -268,10 +289,9 @@ const ConfirmOrder = () => {
                 <div className="bg-[#fff7fe] flex items-start gap-3">
                   <InfoIcon size={52} className="text-[var(--color-purple)]" />
                   <p className="text-[#1C1C1C]">
-                    Lorem ipsum dolor sit amet consectetur. Ut enim lorem at
-                    condimentum pellentesque. Lobortis mattis in et sit tortor
-                    amet et. Eu enim quis sit tristique volutpat magna feugiat
-                    sagittis.
+                    Your payment will be processed securely through Stripe. All
+                    card information is encrypted and never stored on our
+                    servers.
                   </p>
                 </div>
               </div>
@@ -283,6 +303,7 @@ const ConfirmOrder = () => {
           <div className="absolute z-10 -right-[300px] -bottom-12 w-[1400px] h-[600px] bg-[var(--color-purple)]/20 rounded-full blur-[120px]" />
         </div>
       </div>
+
       {/* Terms and Conditions */}
       <Modal
         showModal={toggleTermsModal}
@@ -329,6 +350,7 @@ const ConfirmOrder = () => {
           </p>
         </div>
       </Modal>
+
       {/* Privacy Policy */}
       <Modal
         showModal={togglePrivacyModal}
@@ -375,8 +397,6 @@ const ConfirmOrder = () => {
           </p>
         </div>
       </Modal>
-      {/* Common footer */}
-      <Footer />
     </>
   );
 };

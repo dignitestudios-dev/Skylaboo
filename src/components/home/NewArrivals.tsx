@@ -12,7 +12,7 @@ import SectionLoader from "../common/SectionLoader";
 import { productHooks } from "@/hooks/products/ProductHooks";
 
 const NewArrivals = () => {
-  const { loading, products } = productHooks.useGetAllProducts(1, 10, "");
+  const { loading, products } = productHooks.useGetAllProducts(1, 10, "", "");
 
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);

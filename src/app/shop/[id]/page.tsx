@@ -1,8 +1,6 @@
 "use client";
 import Accordion from "@/components/common/Accordion";
 import PageLoader from "@/components/common/PageLoader";
-import Footer from "@/components/global/Footer";
-import Navbar from "@/components/global/Navbar";
 import NewArrivals from "@/components/home/NewArrivals";
 import Check from "@/components/icons/Check";
 import { productHooks } from "@/hooks/products/ProductHooks";
@@ -17,8 +15,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const colors = ["Red", "Green", "Blue", "White", "Black"];
-const sizes = ["0-3", "3-6", "6-9", "9-12", "12-18"];
+const isBrowser = typeof window !== "undefined";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -26,7 +23,7 @@ const ProductDetails = () => {
 
   const { loading, product } = productHooks.useGetProductById(id as string);
   const { loading: loadingAllProducts, products } =
-    productHooks.useGetAllProducts(1, 10, "");
+    productHooks.useGetAllProducts(1, 10, "", "");
 
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
@@ -44,6 +41,12 @@ const ProductDetails = () => {
       size: product?.sizes[0] || "",
     }));
   }, [product]);
+
+  useEffect(() => {
+    if (isBrowser) {
+      localStorage.removeItem("orderData");
+    }
+  }, []);
 
   if (loading || loadingAllProducts) return <PageLoader />;
 
@@ -83,8 +86,6 @@ const ProductDetails = () => {
 
   return (
     <>
-      {/* Common navigation bar */}
-      <Navbar />
       <div className="lg:mt-6 mt-24 relative">
         {/* Yellow Glow */}
         <div className="absolute z-10 left-1/4 -top-12 w-[70%] h-[700px] bg-[#fad0bb]/60 rounded-full blur-[150px]" />
@@ -297,8 +298,6 @@ const ProductDetails = () => {
           <div className="absolute z-10 -right-[300px] -bottom-12 w-[1400px] h-[600px] bg-[var(--color-purple)]/20 rounded-full blur-[120px]" />
         </div>
       </div>
-      {/* Common footer */}
-      <Footer />
     </>
   );
 };
