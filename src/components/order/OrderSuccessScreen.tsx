@@ -4,7 +4,17 @@ import { OrderData } from "@/lib/types";
 import { utils } from "@/lib/utils";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { Clock, Printer } from "lucide-react";
+import {
+  Clock,
+  Copy,
+  Download,
+  Mail,
+  MapPin,
+  Phone,
+  Printer,
+  User,
+} from "lucide-react";
+import Link from "next/link";
 
 (pdfMake as any).vfs = pdfFonts.vfs;
 
@@ -183,282 +193,288 @@ const OrderSuccessScreen = ({ orderData }: { orderData: OrderData | null }) => {
   };
 
   return (
-    <section className="flex flex-col justify-center items-center gap-3 sm:mt-12 sm:p-12 p-6">
-      <Image
-        src={"/images/welcome.png"}
-        alt="Welcome"
-        width={120}
-        height={120}
-      />
-
-      <h2 className="font-sans-bold text-4xl text-[var(--color-purple)]">
-        Thank you for Shopping!
-      </h2>
-
-      <p className="text-[#505050] text-center">
-        Your order ID: #{orderData.shortCode} has been placed successfully
-      </p>
-
-      <p className="font-medium text-lg text-center">
-        A confirmation email containing order summary has been sent to your{" "}
-        <br />
-        provided email address {orderData.contact.email}
-      </p>
-
-      <div className="mt-5 flex items-center gap-10">
-        <div className="flex items-center gap-2">
-          <Clock color="#808080" size={18} />
-          Order Placed:{" "}
-          <span className="text-[#808080]">
-            {" "}
-            {utils.formatDateWithMonthName(orderData.createdAt)}
-          </span>
+    <>
+      <div className="relative mt-20 min-h-screen">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[var(--color-purple)]/30 rounded-full opacity-20"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-[var(--color-yellow)]/30 rounded-full opacity-20 delay-300"></div>
         </div>
 
-        <div>
-          <button
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => generatePDF(orderData)}
-          >
-            <Printer color="#808080" size={18} />
-            <span className="underline">Print</span>
-          </button>
+        <div className="relative z-10 container mx-auto px-4 py-16">
+          {/* Success Header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-multi-gradient rounded-full mb-6 animate-bounce">
+              <svg
+                className="w-12 h-12 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="3"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-sans-bold bg-gradient-to-r from-[#ff82e9] to-[#ebc501] bg-clip-text text-transparent pb-4">
+              Thank you for Shopping!
+            </h1>
+            <p className="text-xl text-gray-600 mb-2">
+              Your order has been placed successfully
+            </p>
+            <p>
+              A confirmation email containing order summary has been sent to <br />
+              your provided email address <span className="text-[var(--color-purple)] font-bold text-lg"> {orderData?.contact?.email}</span>
+            </p>
+          </div>
+
+          {/* Order ID Section */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg">
+              <span className="text-gray-600">Your order ID:</span>
+              <span className="font-bold text-[var(--color-purple)] text-lg">
+                #{orderData.shortCode}
+              </span>
+              <button
+                onClick={handleCopyOrderId}
+                className="p-1 hover:bg-gray-100 rounded cursor-pointer"
+              >
+                <Copy />
+              </button>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+            {/* Header Actions */}
+            <div className="bg-multi-gradient px-8 py-6">
+              <div className="flex justify-between items-center text-white">
+                <div>
+                  <h2 className="text-2xl font-bold">Order Summary</h2>
+                  <p className="opacity-90">
+                    Order placed on{" "}
+                    {utils.formatDateWithMonthName(orderData.createdAt)}
+                  </p>
+                </div>
+                <button
+                  onClick={() => generatePDF(orderData)}
+                  className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full transition-colors cursor-pointer"
+                >
+                  <Download size={18} />
+                  Download PDF
+                </button>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-8 p-8">
+              {/* Order Details */}
+              <div className="lg:col-span-2 space-y-8">
+                {/* Customer Information */}
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <User className="text-[var(--color-purple)]" size={20} />
+                    Contact Information
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Mail size={16} />
+                      <span>{orderData.contact.email}</span>
+                    </div>
+                    {orderData?.delivery?.firstName && (
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <User size={16} />
+                        <span>{orderData?.delivery?.firstName}</span>
+                      </div>
+                    )}
+                    {orderData.delivery?.phoneNumber && (
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <Phone size={16} />
+                        <span>{orderData.delivery?.phoneNumber}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Delivery Information */}
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <MapPin className="text-[var(--color-purple)]" size={20} />
+                    {orderData.orderType === "delivery"
+                      ? "Delivery Details"
+                      : "Pickup Details"}
+                  </h3>
+                  {orderData.orderType === "delivery" && orderData.delivery ? (
+                    <div className="space-y-2 text-gray-600">
+                      <p>
+                        <strong>Address:</strong> {orderData.delivery.address}
+                      </p>
+                      {orderData.delivery.apartment && (
+                        <p>
+                          <strong>Apartment:</strong>{" "}
+                          {orderData.delivery.apartment}
+                        </p>
+                      )}
+                      <p>
+                        <strong>City:</strong> {orderData.delivery.city}
+                      </p>
+                      {orderData.delivery.postalCode && (
+                        <p>
+                          <strong>Postal Code:</strong>{" "}
+                          {orderData.delivery.postalCode}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2 text-gray-600">
+                      <p>
+                        <strong>Pickup Address:</strong>{" "}
+                        {orderData.pickupAddress}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Product List */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-gray-800">
+                    Order Items
+                  </h3>
+                  {orderData.products.map((product, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-50 rounded-2xl p-4 flex justify-between items-center"
+                    >
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-800">
+                          {product.product.title}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          Color: {product.selectedColor} | Size:{" "}
+                          {product.selectedSize} | Qty: {product.quantity}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold">
+                          $
+                          {(product.product.price * product.quantity).toFixed(
+                            2
+                          )}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          ${product.product?.price?.toFixed(2)} each
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Order Summary */}
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-[var(--color-purple)]/10 to-[var(--color-purple)]/10 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">
+                    Order Summary
+                  </h3>
+
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">
+                        Subtotal ({orderData.products?.length} items)
+                      </span>
+                      <span className="font-semibold">
+                        $
+                        {(
+                          orderData?.totalAmount - orderData.shippingCost
+                        ).toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Shipping</span>
+                      <span className="font-semibold">
+                        ${orderData?.shippingCost.toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="border-t pt-4">
+                      <div className="flex justify-between items-center text-xl font-bold text-[var(--color-purple)]">
+                        <span>Total</span>
+                        <span>${orderData?.totalAmount.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center space-y-4">
+                  <Link
+                    href="/"
+                    className="block w-full bg-multi-gradient text-white py-4 rounded-2xl font-semibold"
+                  >
+                    Continue Shopping
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="bg-multi-gradient p-0.5 w-full rounded-2xl mt-10">
-        <div className="w-full min-h-56 grid grid-cols-3 bg-white rounded-2xl">
-          <div className="h-full p-5 bg-gradient-order-success">Contact</div>
-          <div className="h-full p-5 bg-white">Shipping</div>
-          <div className="h-full p-5 bg-gradient-order-success">Payment</div>
-        </div>
-      </div>
-    </section>
+    </>
   );
 };
 
 export default OrderSuccessScreen;
 
-// <div className="relative mt-20 min-h-screen">
-//   {/* Background decorative elements */}
-//   <div className="absolute inset-0 overflow-hidden">
-//     <div className="absolute top-20 left-10 w-32 h-32 bg-[var(--color-purple)]/30 rounded-full opacity-20"></div>
-//     <div className="absolute top-40 right-20 w-24 h-24 bg-[var(--color-yellow)]/30 rounded-full opacity-20 delay-300"></div>
-//   </div>
+// <section className="flex flex-col justify-center items-center gap-3 sm:mt-12 sm:p-12 p-6">
+//   <Image
+//     src={"/images/welcome.png"}
+//     alt="Welcome"
+//     width={120}
+//     height={120}
+//   />
 
-//   <div className="relative z-10 container mx-auto px-4 py-16">
-//     {/* Success Header */}
-//     <div className="text-center mb-12">
-//       <div className="inline-flex items-center justify-center w-24 h-24 bg-multi-gradient rounded-full mb-6 animate-bounce">
-//         <svg
-//           className="w-12 h-12 text-white"
-//           fill="none"
-//           stroke="currentColor"
-//           viewBox="0 0 24 24"
-//         >
-//           <path
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth="3"
-//             d="M5 13l4 4L19 7"
-//           ></path>
-//         </svg>
-//       </div>
-//       <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-[#ff82e9] to-[#ebc501] bg-clip-text text-transparent pb-4">
-//         Thank you for Shopping!
-//       </h1>
-//       <p className="text-xl text-gray-600 mb-2">
-//         Your order has been placed successfully
-//       </p>
+//   <h2 className="font-sans-bold text-4xl text-[var(--color-purple)]">
+//     Thank you for Shopping!
+//   </h2>
+
+//   <p className="text-[#505050] text-center">
+//     Your order ID: #{orderData.shortCode} has been placed successfully
+//   </p>
+
+//   <p className="font-medium text-lg text-center">
+//     A confirmation email containing order summary has been sent to your{" "}
+//     <br />
+//     provided email address {orderData.contact.email}
+//   </p>
+
+//   <div className="mt-5 flex items-center gap-10">
+//     <div className="flex items-center gap-2">
+//       <Clock color="#808080" size={18} />
+//       Order Placed:{" "}
+//       <span className="text-[#808080]">
+//         {" "}
+//         {utils.formatDateWithMonthName(orderData.createdAt)}
+//       </span>
 //     </div>
 
-//     {/* Order ID Section */}
-//     <div className="text-center mb-8">
-//       <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg">
-//         <span className="text-gray-600">Your order ID:</span>
-//         <span className="font-bold text-[var(--color-purple)] text-lg">
-//           #{orderData.shortCode}
-//         </span>
-//         <button
-//           onClick={handleCopyOrderId}
-//           className="p-1 hover:bg-gray-100 rounded cursor-pointer"
-//         >
-//           <Copy />
-//         </button>
-//       </div>
-//     </div>
-
-//     {/* Main Content */}
-//     <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-//       {/* Header Actions */}
-//       <div className="bg-multi-gradient px-8 py-6">
-//         <div className="flex justify-between items-center text-white">
-//           <div>
-//             <h2 className="text-2xl font-bold">Order Summary</h2>
-//             <p className="opacity-90">
-//               Order placed on{" "}
-//               {utils.formatDateWithMonthName(orderData.createdAt)}
-//             </p>
-//           </div>
-//           <button
-//             onClick={() => generatePDF(orderData)}
-//             className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full transition-colors cursor-pointer"
-//           >
-//             <Download size={18} />
-//             Download PDF
-//           </button>
-//         </div>
-//       </div>
-
-//       <div className="grid lg:grid-cols-3 gap-8 p-8">
-//         {/* Order Details */}
-//         <div className="lg:col-span-2 space-y-8">
-//           {/* Customer Information */}
-//           <div className="bg-gray-50 rounded-2xl p-6">
-//             <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-//               <User className="text-[var(--color-purple)]" size={20} />
-//               Contact Information
-//             </h3>
-//             <div className="space-y-2">
-//               <div className="flex items-center gap-2 text-gray-600">
-//                 <Mail size={16} />
-//                 <span>{orderData.contact.email}</span>
-//               </div>
-//               {orderData?.delivery?.firstName && (
-//                 <div className="flex items-center gap-2 text-gray-600">
-//                   <User size={16} />
-//                   <span>{orderData?.delivery?.firstName}</span>
-//                 </div>
-//               )}
-//               {orderData.delivery?.phoneNumber && (
-//                 <div className="flex items-center gap-2 text-gray-600">
-//                   <Phone size={16} />
-//                   <span>{orderData.delivery?.phoneNumber}</span>
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-
-//           {/* Delivery Information */}
-//           <div className="bg-gray-50 rounded-2xl p-6">
-//             <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-//               <MapPin className="text-[var(--color-purple)]" size={20} />
-//               {orderData.orderType === "delivery"
-//                 ? "Delivery Details"
-//                 : "Pickup Details"}
-//             </h3>
-//             {orderData.orderType === "delivery" && orderData.delivery ? (
-//               <div className="space-y-2 text-gray-600">
-//                 <p>
-//                   <strong>Address:</strong> {orderData.delivery.address}
-//                 </p>
-//                 {orderData.delivery.apartment && (
-//                   <p>
-//                     <strong>Apartment:</strong>{" "}
-//                     {orderData.delivery.apartment}
-//                   </p>
-//                 )}
-//                 <p>
-//                   <strong>City:</strong> {orderData.delivery.city}
-//                 </p>
-//                 {orderData.delivery.postalCode && (
-//                   <p>
-//                     <strong>Postal Code:</strong>{" "}
-//                     {orderData.delivery.postalCode}
-//                   </p>
-//                 )}
-//               </div>
-//             ) : (
-//               <div className="space-y-2 text-gray-600">
-//                 <p>
-//                   <strong>Pickup Address:</strong>{" "}
-//                   {orderData.pickupAddress}
-//                 </p>
-//               </div>
-//             )}
-//           </div>
-
-//           {/* Product List */}
-//           <div className="space-y-4">
-//             <h3 className="text-xl font-bold text-gray-800">
-//               Order Items
-//             </h3>
-//             {orderData.products.map((product, index) => (
-//               <div
-//                 key={index}
-//                 className="bg-gray-50 rounded-2xl p-4 flex justify-between items-center"
-//               >
-//                 <div className="flex-1">
-//                   <h4 className="font-semibold text-gray-800">
-//                     {product.product.title}
-//                   </h4>
-//                   <p className="text-sm text-gray-600">
-//                     Color: {product.selectedColor} | Size:{" "}
-//                     {product.selectedSize} | Qty: {product.quantity}
-//                   </p>
-//                 </div>
-//                 <div className="text-right">
-//                   <p className="font-semibold">
-//                     $
-//                     {(product.product.price * product.quantity).toFixed(
-//                       2
-//                     )}
-//                   </p>
-//                   <p className="text-sm text-gray-600">
-//                     ${product.product?.price?.toFixed(2)} each
-//                   </p>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Order Summary */}
-//         <div className="space-y-6">
-//           <div className="bg-gradient-to-br from-[var(--color-purple)]/10 to-[var(--color-purple)]/10 rounded-2xl p-6">
-//             <h3 className="text-xl font-bold text-gray-800 mb-6">
-//               Order Summary
-//             </h3>
-
-//             <div className="space-y-4">
-//               <div className="flex justify-between items-center">
-//                 <span className="text-gray-600">
-//                   Subtotal ({orderData.products?.length} items)
-//                 </span>
-//                 <span className="font-semibold">
-//                   $
-//                   {(
-//                     orderData?.totalAmount - orderData.shippingCost
-//                   ).toFixed(2)}
-//                 </span>
-//               </div>
-
-//               <div className="flex justify-between items-center">
-//                 <span className="text-gray-600">Shipping</span>
-//                 <span className="font-semibold">
-//                   ${orderData?.shippingCost.toFixed(2)}
-//                 </span>
-//               </div>
-
-//               <div className="border-t pt-4">
-//                 <div className="flex justify-between items-center text-xl font-bold text-[var(--color-purple)]">
-//                   <span>Total</span>
-//                   <span>${orderData?.totalAmount.toFixed(2)}</span>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="text-center space-y-4">
-//             <Link
-//               href="/"
-//               className="block w-full bg-multi-gradient text-white py-4 rounded-2xl font-semibold"
-//             >
-//               Continue Shopping
-//             </Link>
-//           </div>
-//         </div>
-//       </div>
+//     <div>
+//       <button
+//         className="flex items-center gap-2 cursor-pointer"
+//         onClick={() => generatePDF(orderData)}
+//       >
+//         <Printer color="#808080" size={18} />
+//         <span className="underline">Print</span>
+//       </button>
 //     </div>
 //   </div>
-// </div>
+
+//   <div className="bg-multi-gradient p-0.5 w-full rounded-2xl mt-10">
+//     <div className="w-full min-h-56 grid grid-cols-3 bg-white rounded-2xl">
+//       <div className="h-full p-5 bg-gradient-order-success">Contact</div>
+//       <div className="h-full p-5 bg-white">Shipping</div>
+//       <div className="h-full p-5 bg-gradient-order-success">Payment</div>
+//     </div>
+//   </div>
+// </section>

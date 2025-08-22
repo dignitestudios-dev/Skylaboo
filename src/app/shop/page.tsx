@@ -2,7 +2,7 @@
 import ProductsListing from "@/components/shop/ProductsListing";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -18,7 +18,7 @@ const Shop = () => {
     const parsedSearch = search ? JSON.parse(search) : [];
 
     if (!previousSearches.length) {
-      setPreviousSearches(parsedSearch);
+      setPreviousSearches(parsedSearch.reverse());
     }
   }, []);
 
@@ -30,18 +30,35 @@ const Shop = () => {
 
   const handleChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchedInputValue = e.target.value;
+    setShowPreviousSearches(true);
 
-    const searchMatch = previousSearches.filter((search) => {
+    const search = localStorage.getItem("search");
+    const parsedSearch: [string] = search ? JSON.parse(search) : [];
+
+    const searchMatch = parsedSearch?.filter((search) => {
       if (search.includes(searchedInputValue)) {
         return search;
       }
     });
 
-    setPreviousSearches(searchMatch);
+    setPreviousSearches(searchMatch.reverse());
     setSearchedInputValue(searchedInputValue);
   };
 
-  const handleSearch = () => {
+  const onInputBlur = () => {
+    const search = localStorage.getItem("search");
+    const parsedSearch = search ? JSON.parse(search) : [];
+
+    setPreviousSearches(parsedSearch.reverse());
+
+    setTimeout(() => {
+      setShowPreviousSearches(false);
+    }, 200);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
     const search = localStorage.getItem("search");
     const parsedSearch = search ? JSON.parse(search) : [];
 
@@ -52,22 +69,55 @@ const Shop = () => {
       if (!alreadySearched) {
         const searchesWithNew = [...parsedSearch, searchedInputValue];
         localStorage.setItem("search", JSON.stringify(searchesWithNew));
-        setPreviousSearches(searchesWithNew);
+        setPreviousSearches(searchesWithNew.reverse());
       }
     }
 
+    setShowPreviousSearches(false);
     setSearchedValue(searchedInputValue);
+  };
+
+  const handleSearchFromPrevious = (previousSearchValue: string) => {
+    console.log(previousSearchValue);
+    setSearchedInputValue(previousSearchValue);
+
+    const search = localStorage.getItem("search");
+    const parsedSearch = search ? JSON.parse(search) : [];
+
+    if (previousSearchValue) {
+      const alreadySearched = parsedSearch.find(
+        (search: string) => search === previousSearchValue
+      );
+      if (!alreadySearched) {
+        const searchesWithNew = [...parsedSearch, previousSearchValue];
+        localStorage.setItem("search", JSON.stringify(searchesWithNew));
+        setPreviousSearches(searchesWithNew.reverse());
+      }
+    }
+
+    // setShowPreviousSearches(false);
+    setSearchedValue(previousSearchValue);
+  };
+
+  const handleCloseSearch = () => {
+    const search = localStorage.getItem("search");
+    const parsedSearch = search ? JSON.parse(search) : [];
+
+    setPreviousSearches(parsedSearch.reverse());
+
+    setSearchedInputValue("");
+    setSearchedValue("");
   };
 
   return (
     <>
       <div>
         {/* ShopHero */}
-        <div className="relative lg:mt-6 mt-16">
+        <div className="relative lg:mt-6 mt-16 bg-gradient-to-b from-transparent via-transparent to-[var(--color-yellow)]/20">
           {/* Yellow Glow */}
-          <div className="absolute bottom-32 left-[20%] blur-[120px]">
+          {/* <div className="absolute bottom-32 left-[20%] blur-[120px]">
             <div className="absolute z-10 w-[1000px] h-[605px] bg-[#fce7db] rounded-full blur-lg" />
-          </div>
+          </div> */}
           <div className="relative z-20 grid md:grid-cols-3 items-center sm:mt-0 mt-6">
             <div className="">
               <Image
@@ -87,29 +137,40 @@ const Shop = () => {
                 </p>
 
                 <div className="relative mt-3 flex items-center bg-white rounded-full sm:w-[350px] w-[90%] px-4">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    id="search"
-                    name="search"
-                    value={searchedInputValue}
-                    onChange={handleChangeSearchValue}
-                    onFocus={() => setShowPreviousSearches(true)}
-                    onBlur={() => setShowPreviousSearches(false)}
-                    className="w-full text-sm py-2 border-none outline-none"
-                  />
-                  <button onClick={handleSearch}>
-                    <Search color="#5C5C5C" size={18} />
-                  </button>
-
+                  <form onSubmit={handleSearch} className="w-full">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      id="search"
+                      name="search"
+                      value={searchedInputValue}
+                      onChange={handleChangeSearchValue}
+                      onFocus={() => setShowPreviousSearches(true)}
+                      onBlur={onInputBlur}
+                      className="w-full text-sm py-2 border-none outline-none"
+                    />
+                  </form>
+                  {showPreviousSearches || searchedInputValue ? (
+                    <button
+                      className="cursor-pointer"
+                      onClick={handleCloseSearch}
+                    >
+                      <X color="#5C5C5C" size={18} />
+                    </button>
+                  ) : (
+                    <button className="cursor-pointer">
+                      <Search color="#5C5C5C" size={18} />
+                    </button>
+                  )}
                   {showPreviousSearches && (
-                    <div className="mt-2 absolute z-50 top-[100%] left-0 w-full rounded-2xl bg-white">
+                    <div className="max-h-[300px] sm:max-h-[400px] mt-2 absolute z-50 top-[100%] left-0 w-full rounded-2xl bg-white overflow-y-auto">
                       {previousSearches.map((search, index) => (
                         <div
                           key={index}
+                          onClick={() => handleSearchFromPrevious(search)}
                           className={`${
                             index !== 0 && "border-t"
-                          } border-gray-400 px-4 py-2`}
+                          } border-gray-400 px-4 py-2 cursor-pointer hover:bg-gray-100`}
                         >
                           <p>{search}</p>
                         </div>
