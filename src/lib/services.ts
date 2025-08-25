@@ -4,10 +4,10 @@ import { AppConfigs, Category, OrderData, Pagination, Product } from "./types";
 // Create an Axios instance
 const API = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_SERVER_URL}`,
-  withCredentials: true,
   timeout: 10000, // Set a timeout (optional)
   headers: {
     "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": true,
   },
 });
 
