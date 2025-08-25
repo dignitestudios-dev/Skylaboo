@@ -8,7 +8,7 @@ export default function ToastProvider() {
       position="top-center"
       toastOptions={{
         className: "",
-        duration: 5000,
+        duration: 2000,
         removeDelay: 1000,
         style: {
           background: "#fff",

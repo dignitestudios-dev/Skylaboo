@@ -8,7 +8,7 @@ import { addProductToCart } from "@/lib/features/cartSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { Cart, CartProduct, Product } from "@/lib/types";
 import { utils } from "@/lib/utils";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -67,9 +67,9 @@ const ProductDetails = () => {
       quantity:
         type === "dec"
           ? prev.quantity === 1
-            ? prev.quantity
-            : prev.quantity--
-          : prev.quantity++,
+            ? 1 // Keep at minimum of 1
+            : prev.quantity - 1 // Subtract 1
+          : prev.quantity + 1, // Add 1
     }));
   };
 
@@ -111,14 +111,33 @@ const ProductDetails = () => {
                   className="sm:px-12 px-6 py-6 relative overflow-hidden"
                 >
                   <div className="relative z-20 grid sm:grid-cols-2 lg:gap-20 gap-10 mb-10">
-                    <div>
+                    {/* Image Slider Section - Responsive Improvements */}
+                    <div className="relative w-full  max-w-[86vw] sm:w-auto bg-gray-100 rounded-3xl overflow-hidden">
+                      {/* navigation buttons starts */}
+                      <button
+                        ref={prevRef}
+                        className="absolute left-0 top-1/2 text-gray-600 -translate-y-1/2 z-30 cursor-pointer"
+                        aria-label="Previous slide"
+                      >
+                        <ChevronLeft size={28} />
+                      </button>
+
+                      <button
+                        ref={nextRef}
+                        className="absolute right-0 top-1/2 text-gray-600 -translate-y-1/2 z-30 cursor-pointer"
+                        aria-label="Next slide"
+                      >
+                        <ChevronRight size={28} />
+                      </button>
+                      {/* navigation buttons ends */}
+
                       <Swiper
                         modules={[Navigation, Pagination, Autoplay]}
                         spaceBetween={20}
                         slidesPerView={1}
                         loop={true}
                         autoplay={{
-                          delay: 3000,
+                          delay: 5000,
                         }}
                         navigation={{
                           prevEl: prevRef.current,
@@ -136,12 +155,17 @@ const ProductDetails = () => {
                             swiper.navigation.update();
                           }
                         }}
-                        className="px-12"
+                        className="sm:px-12 px-0" // Remove padding on mobile
                       >
                         {product?.images?.map((image, index) => (
                           <SwiperSlide key={index}>
                             <div
-                              className="relative bg-contain bg-no-repeat bg-gray-100 bg-center md:h-full sm:h-fit min-[425px]:h-[80vh] h-[280px] sm:min-h-[600px] min-[425px]:min-h-[300px] min-w-[220px] w-full rounded-3xl flex justify-center items-center"
+                              className="relative bg-contain bg-no-repeat bg-center 
+                         lg:h-full md:h-fit 
+                         sm:min-h-[600px] sm:h-fit
+                         min-[480px]:h-[60vh] min-[480px]:min-h-[350px]
+                         h-[50vh] min-h-[280px] max-h-[400px]
+                         w-full rounded-3xl flex justify-center items-center"
                               style={{
                                 backgroundImage: `url(${image.link})`,
                               }}
@@ -151,24 +175,32 @@ const ProductDetails = () => {
                       </Swiper>
                     </div>
 
-                    <div className="flex flex-col justify-center lg:gap-6 gap-3">
+                    {/* Product Details Section - Responsive Improvements */}
+                    <div className="flex flex-col justify-center lg:gap-6 gap-3 w-full min-w-0">
                       <p className="text-sm text-[#333333]">
                         {product?.subtitle}
                       </p>
-                      <p className="text-xl font-georgia">{product?.title}</p>
+                      <p className="text-xl font-georgia break-words">
+                        {product?.title}
+                      </p>
                       <p className="text-2xl font-black">${product?.price}</p>
                       <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
+
+                      {/* Color Selection - Responsive */}
                       <div>
                         <p className="uppercase text-sm">Color</p>
-                        <div className="mt-2 flex md:gap-4 gap-2 flex-wrap">
+                        <div className="mt-2 flex gap-2 flex-wrap">
                           {product?.colors?.map((color, index) => (
                             <button
                               key={index}
-                              className={`rounded-3xl rounded-bl-2xl md:rounded-tl-[28px] rounded-tl-[24px] text-xs border border-white md:py-3 py-1.5 md:px-4 px-2 font-medium cursor-pointer md:min-w-[75px] min-w-14 ${
-                                selectedDetails.color === color
-                                  ? "text-white bg-multi-gradient"
-                                  : "text-[#333333] bg-transparent"
-                              }`}
+                              className={`rounded-3xl rounded-bl-2xl rounded-tl-[24px] sm:rounded-tl-[28px] 
+                         text-xs border border-white py-1.5 px-2 sm:py-3 sm:px-4 
+                         font-medium cursor-pointer min-w-12 sm:min-w-[75px] 
+                         text-center flex-shrink-0 ${
+                           selectedDetails.color === color
+                             ? "text-white bg-multi-gradient"
+                             : "text-[#333333] bg-transparent"
+                         }`}
                               onClick={() =>
                                 handleSelectProductDetails("color", color)
                               }
@@ -178,17 +210,22 @@ const ProductDetails = () => {
                           ))}
                         </div>
                       </div>
+
+                      {/* Size Selection - Responsive */}
                       <div>
                         <p className="uppercase text-sm">sizes</p>
-                        <div className="mt-2 flex md:gap-4 gap-2 flex-wrap">
+                        <div className="mt-2 flex gap-2 flex-wrap">
                           {product?.sizes.map((size, index) => (
                             <button
                               key={index}
-                              className={`rounded-3xl rounded-bl-2xl md:rounded-tl-[28px] rounded-tl-[24px] text-xs border border-white md:py-3 py-1.5 md:px-4 px-2 font-medium cursor-pointer md:w-[75px] w-14 ${
-                                selectedDetails.size === size
-                                  ? "text-white bg-multi-gradient"
-                                  : "text-[#333333] bg-transparent"
-                              }`}
+                              className={`rounded-3xl rounded-bl-2xl rounded-tl-[24px] sm:rounded-tl-[28px] 
+                         text-xs border border-white py-1.5 px-2 sm:py-3 sm:px-4 
+                         font-medium cursor-pointer w-12 sm:w-[75px] 
+                         flex-shrink-0 ${
+                           selectedDetails.size === size
+                             ? "text-white bg-multi-gradient"
+                             : "text-[#333333] bg-transparent"
+                         }`}
                               onClick={() =>
                                 handleSelectProductDetails("size", size)
                               }
@@ -198,28 +235,34 @@ const ProductDetails = () => {
                           ))}
                         </div>
                       </div>
-                      <div className="w-full flex min-[680px]:flex-row min-[470px]:flex-row flex-col  min-[680px]:items-center gap-5">
-                        <div className="rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-sm bg-multi-gradient h-full w-full max-w-[180px] font-medium cursor-pointer overflow-hidden flex justify-between">
+
+                      {/* Quantity and Add to Cart - Responsive */}
+                      <div className="w-full flex flex-col min-[480px]:flex-row gap-3 min-[480px]:gap-5">
+                        <div
+                          className="rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-sm bg-multi-gradient 
+                       h-12 w-full max-w-[180px] min-[480px]:max-w-[140px] sm:max-w-[180px]
+                       font-medium cursor-pointer overflow-hidden flex justify-between"
+                        >
                           <button
-                            className={`h-full px-4 bg-[var(--color-yellow)] font-bold ${
+                            className={`h-full px-3 sm:px-4 bg-[var(--color-yellow)] font-bold ${
                               selectedDetails.quantity === 1
                                 ? "cursor-not-allowed"
                                 : "cursor-pointer"
-                            } text-2xl text-white`}
+                            } text-2xl text-white flex-shrink-0`}
                             disabled={selectedDetails.quantity === 1}
                             onClick={() => handleSetProductQuantity("dec")}
                           >
                             -
                           </button>
-                          <div className="flex-1/2 h-full flex justify-center items-center bg-white/35 min-w-6">
-                            <p>
+                          <div className="flex-1 h-full flex justify-center items-center bg-white/35 min-w-[40px]">
+                            <p className="text-sm sm:text-base">
                               {selectedDetails.quantity < 10
                                 ? `0${selectedDetails.quantity}`
                                 : selectedDetails.quantity}
                             </p>
                           </div>
                           <button
-                            className="h-full px-4 bg-[var(--color-purple)] font-bold cursor-pointer text-2xl text-white"
+                            className="h-full px-3 sm:px-4 bg-[var(--color-purple)] font-bold cursor-pointer text-2xl text-white flex-shrink-0"
                             onClick={() => handleSetProductQuantity("inc")}
                           >
                             +
@@ -227,31 +270,42 @@ const ProductDetails = () => {
                         </div>
 
                         <button
-                          className="text-nowrap cursor-pointer uppercase bg-purple-gradient text-white px-4 py-2 min-[425px]:w-[280px] w-[240px] max-w-full rounded-3xl rounded-tl-2xl rounded-bl-[30px] md:text-base text-sm"
+                          className="text-nowrap cursor-pointer uppercase bg-purple-gradient text-white 
+                   px-4 py-3 w-full min-[480px]:w-[200px] sm:w-[280px] max-w-full 
+                   rounded-3xl rounded-tl-2xl rounded-bl-[30px] text-sm sm:text-base
+                   h-12 flex items-center justify-center"
                           onClick={() => handleAddProductToCart(product)}
                         >
                           Add to Cart
                         </button>
                       </div>
-                      <div className="flex md:flex-row flex-col md:items-center sm:gap-4 gap-2">
-                        <p className="uppercase font-black text-sm">
+
+                      {/* Receiving Options - Responsive */}
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                        <p className="uppercase font-black text-sm whitespace-nowrap">
                           Receiving Options:
                         </p>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 flex-wrap">
                           {product?.receivingOptions?.map(
                             (receivingOption, index) => (
                               <button
                                 key={index}
-                                className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white py-2 px-4 font-bold cursor-pointer w-[120px] text-[#333333] bg-transparent flex items-center gap-2`}
+                                className={`rounded-3xl rounded-bl-2xl rounded-tl-[28px] text-xs border border-white 
+                           py-2 px-3 sm:px-4 font-bold cursor-pointer min-w-[100px] sm:w-[120px] 
+                           text-[#333333] bg-transparent flex items-center justify-center gap-2 flex-shrink-0`}
                               >
                                 <Check />
-                                {utils.toTitleCase(receivingOption)}
+                                <span className="truncate">
+                                  {utils.toTitleCase(receivingOption)}
+                                </span>
                               </button>
                             )
                           )}
                         </div>
                       </div>
+
+                      {/* Accordions remain the same */}
                       <Accordion
                         titleNode={
                           <p className="uppercase text-sm">Description</p>
@@ -271,7 +325,7 @@ const ProductDetails = () => {
                       >
                         <div className="text-gray-500 text-sm !pt-0">
                           We offer fast, reliable shipping straight to your
-                          doorstep. If you’re not fully satisfied with your
+                          doorstep. If you're not fully satisfied with your
                           order, you can easily return or exchange items within
                           [X] days of delivery.
                         </div>
