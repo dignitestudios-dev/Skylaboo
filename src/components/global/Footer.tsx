@@ -133,7 +133,7 @@ const Footer = () => {
 
           <div className="w-full rounded-full bg-purple-gradient text-white py-3 sm:text-base text-sm">
             <p className="text-center">
-              Copyright {new Date().getFullYear()} All rights reserved
+              &copy; Copyright {new Date().getFullYear()} All rights reserved
             </p>{" "}
           </div>
         </div>

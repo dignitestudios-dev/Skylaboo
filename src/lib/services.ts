@@ -1,5 +1,12 @@
 import axios from "axios";
-import { AppConfigs, Category, OrderData, Pagination, Product } from "./types";
+import {
+  AppConfigs,
+  Category,
+  ContactForm,
+  OrderData,
+  Pagination,
+  Product,
+} from "./types";
 
 // Create an Axios instance
 const API = axios.create({
@@ -123,10 +130,17 @@ const createOrder = (orderData: {
     success: boolean;
   }>(() => API.post("/order", orderData));
 
+// Contact Form Submission API
+const submitContactForm = (payload: ContactForm) =>
+  apiHandler<{ success: boolean; data: ContactForm; message: string }>(() =>
+    API.post("/contact", payload)
+  );
+
 export const api = {
   getAllProducts,
   getProductById,
   getAllCategories,
   getAppConfigs,
   createOrder,
+  submitContactForm,
 };

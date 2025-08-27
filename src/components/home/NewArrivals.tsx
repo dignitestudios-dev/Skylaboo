@@ -18,8 +18,11 @@ const NewArrivals = () => {
   const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <div id="new" className="sm:p-12 p-6">
-      <div className="w-full flex flex-col gap-3 items-center justify-center">
+    <div id="new" className="sm:p-12 p-6 relative">
+      {/* Multi Glow */}
+      <div className="absolute z-10 left-[20%] -top-[200px] w-[700px] h-[700px] bg-multi-gradient opacity-30 rounded-full blur-[150px]" />
+
+      <div className="relative z-20 w-full flex flex-col gap-3 items-center justify-center">
         <SectionHeading title1={"New Arrival"} title2={"2025"} />
         <p className="text-center text-black/65 text-sm">
           Discover the cutest fresh picks for your little ones — just in!
@@ -29,11 +32,11 @@ const NewArrivals = () => {
       {loading ? (
         <SectionLoader />
       ) : !products || !products.length ? (
-        <div className="w-full flex justify-center py-6">
+        <div className="relative z-20 w-full flex justify-center py-6">
           <p className="text-gray-400">No new arrivals</p>
         </div>
       ) : (
-        <div className="relative mt-8">
+        <div className="relative z-20 mt-8">
           {/* Custom Navigation Buttons */}
           <button
             ref={prevRef}

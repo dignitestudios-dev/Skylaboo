@@ -66,6 +66,7 @@ const Hero = () => {
               width={1200}
               height={1200}
               className="lg:w-[900px] w-[500px]"
+              
             />
           </div>
         </SwiperSlide>

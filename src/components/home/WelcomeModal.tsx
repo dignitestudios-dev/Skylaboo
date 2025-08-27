@@ -9,15 +9,23 @@ import X from "../icons/X";
 import Youtube from "../icons/Youtube";
 import Link from "next/link";
 
+const isBrowser = typeof window !== "undefined";
+
 const WelcomeModal = () => {
   const [show, setShow] = useState(false);
   const [showDelay, setShowDelay] = useState(false);
 
   useEffect(() => {
-    setShowDelay(true);
-    setTimeout(() => {
-      setShow(true);
-    }, 300);
+    if (isBrowser) {
+      const welcomeUser = localStorage.getItem("welcome");
+      if (welcomeUser !== "done") {
+        setShowDelay(true);
+        setTimeout(() => {
+          setShow(true);
+          localStorage.setItem("welcome", "done");
+        }, 300);
+      }
+    }
   }, []);
 
   const handleHide = () => {

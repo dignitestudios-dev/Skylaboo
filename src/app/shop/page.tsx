@@ -143,6 +143,7 @@ const Shop = () => {
                       placeholder="Search"
                       id="search"
                       name="search"
+                      autoComplete="false"
                       value={searchedInputValue}
                       onChange={handleChangeSearchValue}
                       onFocus={() => setShowPreviousSearches(true)}

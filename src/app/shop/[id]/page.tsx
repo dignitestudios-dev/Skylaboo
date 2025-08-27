@@ -21,6 +21,9 @@ const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
 
+  const [showDesc, setShowDesc] = useState<boolean>(false);
+  const [showShipping, setShipping] = useState<boolean>(false);
+
   const { loading, product } = productHooks.useGetProductById(id as string);
   const { loading: loadingAllProducts, products } =
     productHooks.useGetAllProducts(1, 10, "", "");
@@ -310,6 +313,8 @@ const ProductDetails = () => {
                         titleNode={
                           <p className="uppercase text-sm">Description</p>
                         }
+                        active={showDesc}
+                        onClick={() => setShowDesc((prev) => !prev)}
                       >
                         <div className="text-gray-500 text-sm !pt-0">
                           {product?.description || "No description"}
@@ -322,6 +327,8 @@ const ProductDetails = () => {
                             Shipping AND RETURN
                           </p>
                         }
+                        active={showShipping}
+                        onClick={() => setShipping((prev) => !prev)}
                       >
                         <div className="text-gray-500 text-sm !pt-0">
                           We offer fast, reliable shipping straight to your

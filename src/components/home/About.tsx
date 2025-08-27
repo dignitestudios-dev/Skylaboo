@@ -25,7 +25,7 @@ const About = () => {
           >
             <PlayButton />
             <div className="w-full absolute -bottom-12 left-0 flex justify-center">
-              <div className="max-w-[90%] text-white sm:px-10 px-5 sm:py-8 py-4 bg-multi-gradient sm:rounded-[50px] rounded-[32px] rounded-tl-2xl shadow-[0px_10px_35px_0px_#A8A8A880]">
+              <div className="max-w-[90%] text-white sm:px-10 px-5 sm:py-8 py-4 bg-multi-gradient sm:rounded-[50px] rounded-[32px] !rounded-tl-2xl shadow-[0px_10px_35px_0px_#A8A8A880]">
                 <p className="font-georgia text-xl">
                   Dress Them Happy, Dress Them Skylaboo
                 </p>

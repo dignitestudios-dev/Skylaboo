@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { InfoIcon } from "lucide-react";
 import CheckoutProductCard from "@/components/checkout/CheckoutProductCard";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
-import Link from "next/link";
 import Modal from "@/components/common/Modal";
 import {
   setOrderType,
