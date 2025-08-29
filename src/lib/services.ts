@@ -74,7 +74,7 @@ const getAllProducts = (
     pagination: Pagination;
   }>(() =>
     API.get(
-      `/product?page=${page}&limit=${limit}&categoryId=${categoryId}&search=${searchTerm}`
+      `/product/active?page=${page}&limit=${limit}&categoryId=${categoryId}&search=${searchTerm}`
     )
   );
 
@@ -90,7 +90,7 @@ const getAllCategories = (
     data: Category[];
     message: string;
     pagination: Pagination;
-  }>(() => API.get(`/category?page=${page}&limit=${limit}`));
+  }>(() => API.get(`/category/active?page=${page}&limit=${limit}`));
 
 // App Configs API
 const getAppConfigs = () =>
@@ -119,6 +119,7 @@ const createOrder = (orderData: {
     lastName?: string;
     phoneNumber?: string;
   };
+  orderDate: string;
   orderType: "delivery" | "pickup";
   shippingCost: number;
   pickupAddress?: string;

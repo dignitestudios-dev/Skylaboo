@@ -2,9 +2,16 @@
 import React, { useState } from "react";
 import { useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 import { api } from "@/lib/services";
 import { OrderData } from "@/lib/types";
+import { utils } from "@/lib/utils";
 
 const PaymentForm = ({
   subtotal,
@@ -20,7 +27,36 @@ const PaymentForm = ({
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
+  const [cardComplete, setCardComplete] = useState({
+    cardNumber: false,
+    cardExpiry: false,
+    cardCvc: false,
+  });
   const { cart } = useAppSelector((state) => state.cart);
+
+  const elementOptions = {
+    style: {
+      base: {
+        color: "#424770",
+        fontSize: "16px",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        "::placeholder": {
+          color: "#aab7c4",
+        },
+        padding: "12px",
+      },
+      invalid: {
+        color: "#9e2146",
+      },
+    },
+  };
+
+  const handleCardChange = (elementType: string) => (event: any) => {
+    setCardComplete((prev) => ({
+      ...prev,
+      [elementType]: event.complete,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,10 +71,20 @@ const PaymentForm = ({
       return;
     }
 
+    // Check if all card fields are complete
+    if (
+      !cardComplete.cardNumber ||
+      !cardComplete.cardExpiry ||
+      !cardComplete.cardCvc
+    ) {
+      onPaymentError("Please complete all card details");
+      return;
+    }
+
     setLoading(true);
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      onPaymentError("Card element not found");
+    const cardNumberElement = elements.getElement(CardNumberElement);
+    if (!cardNumberElement) {
+      onPaymentError("Card number element not found");
       setLoading(false);
       return;
     }
@@ -48,7 +94,7 @@ const PaymentForm = ({
       const { error: pmError, paymentMethod } =
         await stripe.createPaymentMethod({
           type: "card",
-          card: cardElement,
+          card: cardNumberElement,
           billing_details: {
             name: `${cart?.delivery?.firstName || cart?.contact?.email} ${
               cart?.delivery?.lastName || ""
@@ -85,15 +131,14 @@ const PaymentForm = ({
         contact: cart?.contact,
         orderType: cart?.orderType,
         shippingCost: shipping,
-
         paymentMethodId: paymentMethod.id,
+        orderDate: utils.formatDateWithMonthName(new Date()),
         ...(cart?.orderType === "delivery"
           ? { delivery: cart.delivery }
           : { pickupAddress: cart.pickupAddress }),
       };
 
       // Create payment intent on your backend
-      // This should be replaced with your actual API endpoint
       const paymentData = await api.createOrder(orderData);
 
       console.log("payment data: ", paymentData);
@@ -137,29 +182,67 @@ const PaymentForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="p-3 border border-gray-300 rounded-lg bg-white">
-        <CardElement
-          options={{
-            hidePostalCode: false,
-            style: {
-              base: {
-                color: "#424770",
-                fontSize: "16px",
-                fontFamily: "system-ui, -apple-system, sans-serif",
-                "::placeholder": {
-                  color: "#aab7c4",
-                },
-              },
-              invalid: {
-                color: "#9e2146",
-              },
-            },
-          }}
-        />
+      {/* Card Number */}
+      <div className="space-y-2">
+        <label
+          htmlFor="cardNumber"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Card Number
+        </label>
+        <div className="p-3 border border-gray-300 rounded-lg bg-white focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-transparent">
+          <CardNumberElement
+            id="cardNumber"
+            options={elementOptions}
+            onChange={handleCardChange("cardNumber")}
+          />
+        </div>
       </div>
+
+      {/* Card Expiry and CVC */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label
+            htmlFor="cardExpiry"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Expiry Date
+          </label>
+          <div className="p-3 border border-gray-300 rounded-lg bg-white focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-transparent">
+            <CardExpiryElement
+              id="cardExpiry"
+              options={elementOptions}
+              onChange={handleCardChange("cardExpiry")}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label
+            htmlFor="cardCvc"
+            className="block text-sm font-medium text-gray-700"
+          >
+            CVC
+          </label>
+          <div className="p-3 border border-gray-300 rounded-lg bg-white focus-within:ring-2 focus-within:ring-purple-500 focus-within:border-transparent">
+            <CardCvcElement
+              id="cardCvc"
+              options={elementOptions}
+              onChange={handleCardChange("cardCvc")}
+            />
+          </div>
+        </div>
+      </div>
+
       <button
         type="submit"
-        disabled={!stripe || loading}
+        disabled={
+          !stripe ||
+          loading ||
+          !cardComplete.cardNumber ||
+          !cardComplete.cardExpiry ||
+          !cardComplete.cardCvc
+        }
         className="w-full flex justify-center items-center py-3 text-white bg-[var(--color-purple)] rounded-3xl rounded-tl-2xl disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
