@@ -14,12 +14,10 @@ const API = axios.create({
   timeout: 10000, // Set a timeout (optional)
   headers: {
     "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": true,
   },
 });
 
-// default page and limit
-const defaultPage = 1;
+// default limit
 const defaultLimit = 20;
 
 // Centralized API Handling functions start
@@ -63,7 +61,7 @@ const apiHandler = async <T>(apiCall: () => Promise<T>): Promise<T> => {
 
 // Products API
 const getAllProducts = (
-  page: number = defaultPage,
+  page: number = 1,
   limit: number = defaultLimit,
   categoryId: string,
   searchTerm: string
@@ -83,7 +81,7 @@ const getProductById = (id: string) =>
 
 // Categories API
 const getAllCategories = (
-  page: number = defaultPage,
+  page: number = 1,
   limit: number = defaultLimit
 ) =>
   apiHandler<{
