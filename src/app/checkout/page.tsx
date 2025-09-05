@@ -24,7 +24,7 @@ const Checkout = () => {
   const { loading } = appConfigsHooks.useGetAppConfigs();
 
   const shipping = useMemo(() => cart?.shippingCost || 0, [cart.shippingCost]);
-  console.log("shipping: ",shipping)
+  console.log("shipping: ", shipping);
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
     "hide"
