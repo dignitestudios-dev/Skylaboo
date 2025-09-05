@@ -5,6 +5,7 @@ import {
 import { useAppDispatch } from "@/lib/hooks";
 import { CartProduct as CartProductType } from "@/lib/types";
 import Image from "next/image";
+import { Image as ImageIcon } from "lucide-react";
 import React, { useMemo } from "react";
 
 interface CartProductProps {
@@ -37,11 +38,15 @@ const CartProduct: React.FC<CartProductProps> = ({ cartProduct }) => {
   return (
     <div className="flex sm:gap-4 gap-2 py-2">
       <div
-        className="w-[200px] sm:h-[200px] h-[140px] rounded-t-[20px] bg-center bg-cover"
+        className="w-[200px] sm:h-[200px] h-[140px] rounded-t-[20px] bg-center bg-cover bg-gray-100"
         style={{
-          backgroundImage: `url(${product.images[0].link})`,
+          backgroundImage: `url(${product?.images[0]?.link})`,
         }}
-      />
+      >
+        <div className="w-full h-full flex items-center justify-center">
+          <ImageIcon size={32} className="text-gray-300" />
+        </div>
+      </div>
 
       <div className="flex-1 sm:space-y-2.5">
         <p className="text-[#333333] font-georgia sm:text-xl">

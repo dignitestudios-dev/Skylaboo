@@ -1,4 +1,5 @@
 import { Cart, CartProduct } from "@/lib/types";
+import { Image as ImageIcon } from "lucide-react";
 import React from "react";
 
 interface CheckoutProductCardProps {
@@ -15,11 +16,14 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
       <div className="flex gap-3 h-full">
         <div className="h-full">
           <div
-            className="relative w-[72px] h-[72px] rounded-lg bg-center bg-cover"
+            className="relative w-[72px] h-[72px] rounded-lg bg-center bg-cover bg-gray-100"
             style={{
-              backgroundImage: `url(${product.images[0].link})`,
+              backgroundImage: `url(${product?.images[0]?.link})`,
             }}
           >
+            <div className="w-full h-full flex items-center justify-center">
+              <ImageIcon size={32} className="text-gray-300" />
+            </div>
             <div className="absolute -top-3 -right-3 h-6 w-6 rounded-full bg-[var(--color-purple)] flex justify-center items-center">
               <p className="text-white font-bold text-sm">
                 {cartProduct.quantity}
@@ -34,7 +38,9 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
         </div>
       </div>
       <div>
-        <p className="font-bold">${(product.price * cartProduct.quantity).toFixed(2)}</p>
+        <p className="font-bold">
+          ${(product.price * cartProduct.quantity).toFixed(2)}
+        </p>
       </div>
     </div>
   );
