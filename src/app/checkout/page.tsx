@@ -408,10 +408,9 @@ const Checkout = () => {
                 <div className="bg-[#fff7fe] flex items-start gap-3">
                   <InfoIcon size={52} className="text-[var(--color-purple)]" />
                   <p className="text-[#1C1C1C]">
-                    Lorem ipsum dolor sit amet consectetur. Ut enim lorem at
-                    condimentum pellentesque. Lobortis mattis in et sit tortor
-                    amet et. Eu enim quis sit tristique volutpat magna feugiat
-                    sagittis.
+                    Your payment will be processed securely through Stripe. All
+                    card information is encrypted and never stored on our
+                    servers.
                   </p>
                 </div>
               </div>
