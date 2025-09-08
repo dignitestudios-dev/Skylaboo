@@ -23,8 +23,9 @@ const Checkout = () => {
   const { cart } = useAppSelector((state) => state.cart);
   const { loading } = appConfigsHooks.useGetAppConfigs();
 
-  const shipping = useMemo(() => cart?.shippingCost || 0, [cart.shippingCost]);
-  console.log("shipping: ", shipping);
+  const shipping: number = useMemo(() => {
+    return cart.orderType === "pickup" ? 0 : cart.shippingCost || 0;
+  }, [cart.shippingCost, cart.orderType]);
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
     "hide"

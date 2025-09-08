@@ -6,12 +6,10 @@ export interface Product {
   colors: string[];
   sizes: string[];
   price: number;
-  images: {
-    link: string;
-    isFeatured: boolean;
-  }[];
+  images: string[];
   category: string;
   isFeatured: string;
+  shippingCost: number;
   isActive: string;
   isDeleted: string;
   receivingOptions: ("delivery" | "pickup")[];

@@ -115,7 +115,7 @@ const ProductDetails = () => {
                 >
                   <div className="relative z-20 grid sm:grid-cols-2 lg:gap-20 gap-10 mb-10">
                     {/* Image Slider Section - Responsive Improvements */}
-                    <div className="relative w-full  max-w-[86vw] sm:w-auto bg-gray-100 rounded-3xl overflow-hidden">
+                    <div className="relative w-full  max-w-[86vw] sm:w-auto bg-gray-100 rounded-3xl overflow-hidden h-fit">
                       {/* navigation buttons starts */}
                       <button
                         ref={prevRef}
@@ -170,7 +170,7 @@ const ProductDetails = () => {
                          h-[50vh] min-h-[280px] max-h-[400px]
                          w-full rounded-3xl flex justify-center items-center"
                               style={{
-                                backgroundImage: `url(${image.link})`,
+                                backgroundImage: `url(${image})`,
                               }}
                             />
                           </SwiperSlide>
@@ -186,7 +186,12 @@ const ProductDetails = () => {
                       <p className="text-xl font-georgia break-words">
                         {product?.title}
                       </p>
-                      <p className="text-2xl font-black">${product?.price}</p>
+                      <div>
+                        <p className="text-2xl font-black">${product?.price}</p>
+                        <p className="text-gray-600">
+                          Shipping Cost: ${product.shippingCost}
+                        </p>
+                      </div>
                       <div className="w-full h-0.5 bg-multi-gradient rounded-full" />
 
                       {/* Color Selection - Responsive */}
@@ -316,9 +321,15 @@ const ProductDetails = () => {
                         active={showDesc}
                         onClick={() => setShowDesc((prev) => !prev)}
                       >
-                        <div className="text-gray-500 text-sm !pt-0">
-                          {product?.description || "No description"}
-                        </div>
+                        <div
+                          className="text-gray-500 text-sm !pt-0"
+                          dangerouslySetInnerHTML={{
+                            __html: product?.description?.replace(
+                              /\r\n/g,
+                              "<br />"
+                            ),
+                          }}
+                        />
                       </Accordion>
 
                       <Accordion

@@ -10,6 +10,7 @@ import { categoryHooks } from "@/hooks/categories/CategoriesHooks";
 import ProductCardSkeleton, {
   ProductGridSkeleton,
 } from "../common/ProductCardSkeleton";
+import Image from "next/image";
 
 const ProductsListingWithSuspense: React.FC<{ searchTerm: string }> = ({
   searchTerm,
@@ -116,8 +117,14 @@ const ProductsListing: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
             <ProductGridSkeleton count={5} />
           </div>
         ) : !products || !products.length ? (
-          <div className="w-full flex justify-center py-6">
-            <p className="text-gray-400">No Product</p>
+          <div className="w-full flex justify-center items-center flex-col py-6">
+            <Image
+              alt="No Data"
+              src={"/images/notfound.gif"}
+              width={200}
+              height={200}
+            />
+            <p className="text-gray-400">No Product Available</p>
           </div>
         ) : (
           <div className="my-6 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[425px]:grid-cols-2 gap-x-3 gap-y-8">

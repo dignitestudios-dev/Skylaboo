@@ -34,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div
         className="group relative sm:h-[330px] h-[280px] rounded-t-[20px] bg-cover bg-center bg-gray-100"
         style={{
-          backgroundImage: `url(${product?.images[0]?.link})`,
+          backgroundImage: `url(${product?.images[0]})`,
         }}
       >
         {/* Mock image placeholder */}

@@ -30,7 +30,9 @@ const ConfirmOrder = () => {
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const { loading } = appConfigsHooks.useGetAppConfigs();
 
-  const shipping = useMemo(() => cart?.shippingCost || 0, [cart.shippingCost]);
+  const shipping: number = useMemo(() => {
+    return cart.orderType === "pickup" ? 0 : cart.shippingCost || 0;
+  }, [cart.shippingCost, cart.orderType]);
 
   const [toggleTermsModal, setToggleTermsModal] = useState<"hide" | "show">(
     "hide"
@@ -274,7 +276,7 @@ const ConfirmOrder = () => {
 
                 <div className="w-full flex justify-between">
                   <p>Shipping</p>
-                  <p>${shipping}</p>
+                  <p>${shipping.toFixed(2)}</p>
                 </div>
 
                 <div className="sm:text-xl font-bold w-full flex justify-between">

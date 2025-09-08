@@ -2,7 +2,7 @@ import {
   removeProductFromCart,
   updateCartProduct,
 } from "@/lib/features/cartSlice";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { CartProduct as CartProductType } from "@/lib/types";
 import Image from "next/image";
 import { Image as ImageIcon } from "lucide-react";
@@ -14,6 +14,7 @@ interface CartProductProps {
 
 const CartProduct: React.FC<CartProductProps> = ({ cartProduct }) => {
   const dispatch = useAppDispatch();
+  const orderType = useAppSelector((state) => state.cart.cart.orderType);
   const product = useMemo(() => cartProduct.product, [cartProduct.product]);
 
   const handleUpdateCartProduct = (
@@ -40,7 +41,7 @@ const CartProduct: React.FC<CartProductProps> = ({ cartProduct }) => {
       <div
         className="w-[200px] sm:h-[200px] h-[140px] rounded-t-[20px] bg-center bg-cover bg-gray-100"
         style={{
-          backgroundImage: `url(${product?.images[0]?.link})`,
+          backgroundImage: `url(${product?.images[0]})`,
         }}
       >
         <div className="w-full h-full flex items-center justify-center">
@@ -52,7 +53,7 @@ const CartProduct: React.FC<CartProductProps> = ({ cartProduct }) => {
         <p className="text-[#333333] font-georgia sm:text-xl">
           Skylaboo {product.title} For Kids
         </p>
-        <p className="font-bold">${product.price}</p>
+        <p className="font-bold">${product.price} </p>
         <div className="space-y-1">
           <p className="uppercase text-gray-500 font-extralight sm:text-sm text-xs">
             Color: {cartProduct.selectedColor}

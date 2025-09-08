@@ -32,7 +32,6 @@ const cartSlice = createSlice({
       state,
       action: PayloadAction<{ shippingCost: number; pickupAddress: string }>
     ) => {
-      state.cart.shippingCost = action.payload.shippingCost;
       state.cart.pickupAddress = action.payload.pickupAddress;
       utils.saveCartToLocalStorage(state.cart);
     },
@@ -73,11 +72,23 @@ const cartSlice = createSlice({
       );
 
       if (existingProductIndex !== -1) {
-        // Product already exists in cart - show toast message instead of adding
         toast.error("Already in the cart");
       } else {
-        // Add new product to cart
         state.cart.products.push(action.payload);
+
+        // ✅ Add shipping cost only if this product (by _id) is new in the cart
+        const isProductAlreadyInCart = state.cart.products.some(
+          (item, idx) =>
+            idx !== state.cart.products.length - 1 && // ignore the one we just pushed
+            item.product._id === action.payload.product._id
+        );
+
+        if (!isProductAlreadyInCart) {
+          const productShippingCost = action.payload.product.shippingCost || 0;
+          state.cart.shippingCost =
+            (state.cart.shippingCost || 0) + productShippingCost;
+        }
+
         utils.saveCartToLocalStorage(state.cart);
         toast.success(
           `'${action.payload?.product?.title || "Product"}' added to cart`
@@ -101,11 +112,22 @@ const cartSlice = createSlice({
       );
 
       if (productIndex !== -1) {
+        const removedProduct = state.cart.products[productIndex];
         state.cart.products.splice(productIndex, 1);
+
+        // ✅ Check if this was the last variant of that product
+        const isProductStillInCart = state.cart.products.some(
+          (item) => item.product._id === removedProduct.product._id
+        );
+
+        if (!isProductStillInCart) {
+          const productShippingCost = removedProduct.product.shippingCost || 0;
+          state.cart.shippingCost =
+            (state.cart.shippingCost || 0) - productShippingCost;
+        }
+
         toast.success(
-          `'${
-            state.cart.products[productIndex]?.product?.title || "Product"
-          }' removed from cart`
+          `'${removedProduct?.product?.title || "Product"}' removed from cart`
         );
         utils.saveCartToLocalStorage(state.cart);
       }
@@ -141,7 +163,7 @@ const cartSlice = createSlice({
     },
 
     clearCart: (state) => {
-      state.cart = { ...state.cart, products: [] };
+      state.cart = { ...state.cart, products: [], shippingCost: 0 }; // ✅ reset shipping cost
       utils.saveCartToLocalStorage(state.cart);
     },
   },

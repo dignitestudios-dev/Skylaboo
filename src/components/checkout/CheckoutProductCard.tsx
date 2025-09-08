@@ -1,6 +1,7 @@
+import { useAppSelector } from "@/lib/hooks";
 import { Cart, CartProduct } from "@/lib/types";
 import { Image as ImageIcon } from "lucide-react";
-import React from "react";
+import React, { useMemo } from "react";
 
 interface CheckoutProductCardProps {
   cartProduct: CartProduct;
@@ -9,7 +10,8 @@ interface CheckoutProductCardProps {
 const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
   cartProduct,
 }) => {
-  const product = cartProduct.product;
+  const orderType = useAppSelector((state) => state.cart.cart.orderType);
+  const product = useMemo(() => cartProduct.product, [cartProduct.product]);
 
   return (
     <div className="flex justify-between gap-10">
@@ -18,7 +20,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
           <div
             className="relative w-[72px] h-[72px] rounded-lg bg-center bg-cover bg-gray-100"
             style={{
-              backgroundImage: `url(${product?.images[0]?.link})`,
+              backgroundImage: `url(${product?.images[0]})`,
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
@@ -39,7 +41,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
       </div>
       <div>
         <p className="font-bold">
-          ${(product.price * cartProduct.quantity).toFixed(2)}
+          ${(product.price * cartProduct.quantity).toFixed(2)}{" "}
         </p>
       </div>
     </div>
