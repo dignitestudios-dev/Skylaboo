@@ -17,15 +17,15 @@ const WelcomeModal = () => {
 
   useEffect(() => {
     if (isBrowser) {
-      const welcomeUser = localStorage.getItem("welcome");
-      if (welcomeUser !== "done") {
+      // const welcomeUser = localStorage.getItem("welcome");
+      // if (welcomeUser !== "done") {
         setShowDelay(true);
         setTimeout(() => {
           setShow(true);
-          localStorage.setItem("welcome", "done");
+          // localStorage.setItem("welcome", "done");
         }, 300);
       }
-    }
+    // }
   }, []);
 
   const handleHide = () => {

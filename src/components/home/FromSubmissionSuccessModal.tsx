@@ -15,7 +15,7 @@ const FromSubmissionSuccessModal: React.FC<{
     setShowDelay(true);
     setTimeout(() => {
       setShow(true);
-      localStorage.setItem("welcome", "done");
+      // localStorage.setItem("welcome", "done");
     }, 300);
   };
 
